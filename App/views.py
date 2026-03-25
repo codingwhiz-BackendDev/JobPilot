@@ -1,91 +1,130 @@
 import requests
 from django.shortcuts import render
 from .models import Job
+from django.utils import timezone
+from datetime import timedelta
 
 def index(request):
-    return render(request, "index.html")
+    jobs = Job.objects.all()[:10]
+    context = {
+        'jobs':jobs
+    }
+    return render(request, "index.html", context)
 
 def jobs(request):
     jobs_list = []
+    cached_jobs = None
 
     if request.method == "POST":
         query = request.POST.get("query", "").lower().strip()
+
         print("===== JOB SCRAPER STARTED =====")
         print(f"User searched for: {query}")
 
-        # Check if jobs already exist in DB
+        # Find cached jobs
         cached_jobs = Job.objects.filter(title__icontains=query).order_by('-created_at')
+
+        CACHE_DURATION = timedelta(days=1)  # 24 hours
+
         if cached_jobs.exists():
-            print(f"Returning {cached_jobs.count()} cached jobs")
-            jobs_list = list(cached_jobs.values('title', 'company', 'location', 'link'))
+            latest_job = cached_jobs.first()
+
+            # Check if cache is still valid
+            if latest_job.created_at > timezone.now() - CACHE_DURATION:
+                print("Using cached jobs (less than 24 hours old)")
+                print(f"Returning {cached_jobs.count()} cached jobs")
+
+                jobs_list = list(
+                    cached_jobs.values('title', 'company', 'location', 'link')
+                )
+
+                return render(request, "jobs.html", {
+                    "jobs": jobs_list,
+                    "cached_jobs": cached_jobs
+                })
+
+            else:
+                print("Cache expired. Fetching new jobs...")
+
         else:
-            # Fetch from RemoteOK
-            api_url = "https://remoteok.com/api"
+            print("No cached jobs found. Scraping RemoteOK...")
 
-            try:
-                response = requests.get(api_url, headers={"User-Agent": "Mozilla/5.0"})
-                print(f"Website status: {response.status_code}")
+        # Fetch from RemoteOK
+        api_url = "https://remoteok.com/api"
 
-                if response.status_code != 200:
-                    print("Error fetching jobs from API.")
-                    return render(request, "jobs.html", {"jobs": jobs_list})
+        try:
+            response = requests.get(api_url, headers={"User-Agent": "Mozilla/5.0"})
+            print(f"Website status: {response.status_code}")
 
-                data = response.json()
-                print(f"Total jobs received from API: {len(data)-1}")  # first element is metadata
+            if response.status_code != 200:
+                print("Error fetching jobs from API.")
+                return render(request, "jobs.html", {"jobs": jobs_list})
 
-                search_words = query.split()
-                allowed_regions = [
-                    "united states", "usa", "us",
-                    "uk", "united kingdom",
-                    "canada",
-                    "europe", "eu",
-                    "remote"
-                ]
+            data = response.json()
+            print(f"Total jobs received from API: {len(data)-1}")
 
-                for job in data[1:]:  # skip first element (metadata)
-                    title = (job.get("position") or "").lower()
-                    company = job.get("company")
-                    location = (job.get("location") or "remote").lower()
-                    link = job.get("url")
+            search_words = query.split()
 
-                    if link and not link.startswith("https://"):
-                        link = "https://remoteok.com" + link
+            allowed_regions = [
+                "united states", "usa", "us",
+                "uk", "united kingdom",
+                "canada",
+                "europe", "eu",
+                "remote"
+            ]
 
-                    # Match search query words
-                    if search_words and not any(word in title for word in search_words):
-                        continue
+            for job in data[1:]:
+                title = (job.get("position") or "").lower()
+                company = job.get("company") or "Unknown"
+                location = (job.get("location") or "remote").lower()
+                link = job.get("url")
 
-                    # Filter allowed regions
-                    if not any(region in location for region in allowed_regions):
-                        continue
+                if link and not link.startswith("https://"):
+                    link = "https://remoteok.com" + link
 
-                    # Save to DB
-                    job_obj = Job.objects.create(
-                        title=title.title(),
-                        company=company,
-                        location=location.title(),
-                        link=link
-                    )
+                # Match search words
+                if search_words and not any(word in title for word in search_words):
+                    continue
 
-                    jobs_list.append({
-                        "title": job_obj.title,
-                        "company": job_obj.company,
-                        "location": job_obj.location,
-                        "link": job_obj.link
-                    })
+                # Region filter
+                if not any(region in location for region in allowed_regions):
+                    continue
 
-                    print("\n--- JOB ACCEPTED ---")
-                    print(job_obj)
+                # Avoid duplicates
+                job_obj, created = Job.objects.get_or_create(
+                    link=link,
+                    defaults={
+                        "title": title.title(),
+                        "company": company,
+                        "location": location.title(),
+                    }
+                )
 
-                print(f"\nTotal filtered jobs: {len(jobs_list)}")
-                print("===== SCRAPER FINISHED =====")
+                jobs_list.append({
+                    "title": job_obj.title,
+                    "company": job_obj.company,
+                    "location": job_obj.location,
+                    "link": job_obj.link
+                })
 
-            except Exception as e:
-                print("Error:", e)
+                if created:
+                    print("\n--- NEW JOB SAVED ---")
+                else:
+                    print("\n--- JOB ALREADY EXISTS ---")
 
-    return render(request, "jobs.html", {"jobs": jobs_list})
+                print(job_obj)
 
+            print(f"\nTotal jobs returned: {len(jobs_list)}")
+            print("===== SCRAPER FINISHED =====")
 
+        except Exception as e:
+            print("Error:", e)
+
+    return render(request, "jobs.html", {
+        "jobs": jobs_list,
+        "cached_jobs": cached_jobs
+    })
+    
 def saved_jobs(request):
     return render(request, "jobs.html")
 

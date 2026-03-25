@@ -111,7 +111,19 @@
         <a href="jobs" class="view-all">View All →</a>
       </div>
       <div class="jobs-grid stagger" id="featuredJobs">
-        <!-- Jobs loaded by JavaScript -->
+
+        {% if jobs %}
+        {% for job in jobs %}
+        <div class="job-card">
+          <h3>{{ job.title }}</h3>
+          <p>{{ job.company }}</p>
+          <p>{{ job.location }}</p>
+          <a href="ss{{ job.link }}" target="_blank" class="btn-primary">Apply</a>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>No jobs found.</p>
+        {% endif %}
       </div>
     </div>
   </section>
@@ -176,7 +188,7 @@
     </div>
   </footer>
 
-  <script src="{% static 'js/theme.js' %}"></script> 
+  <script src="{% static 'js/theme.js' %}"></script>
 </body>
 
 </html>
