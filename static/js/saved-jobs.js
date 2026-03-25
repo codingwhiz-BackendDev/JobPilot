@@ -206,7 +206,7 @@ function removeFromSaved(jobId) {
 
 // Go to job details
 function goToJobDetails(jobId) {
-    window.location.href = `job-details.html?id=${jobId}`;
+    window.location.href = `/job-details/?id=${jobId}`;
 }
 
 // Sort saved jobs

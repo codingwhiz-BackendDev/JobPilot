@@ -2,8 +2,8 @@
    JOBS LISTING PAGE LOGIC
    ============================================ */
 
-// Extended mock data
-const allJobs = [
+// Extended mock data (fallback if API is empty/unreachable)
+let allJobs = [
     {
         id: 1,
         title: "Senior Frontend Engineer",
@@ -147,6 +147,29 @@ function getUrlParams() {
         search: params.get('q') || '',
         location: params.get('location') || ''
     };
+}
+
+// Load jobs from Django backend instead of relying on mock data.
+async function loadJobsFromApi() {
+    const params = getUrlParams();
+    const qs = new URLSearchParams();
+
+    if (params.search) qs.append('q', params.search);
+    if (params.location) qs.append('location', params.location);
+
+    // API has a safety cap; keep this small for faster UI.
+    qs.append('page_size', '200');
+
+    try {
+        const res = await fetch(`/api/jobs/?${qs.toString()}`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        if (data && Array.isArray(data.jobs) && data.jobs.length > 0) {
+            allJobs = data.jobs;
+        }
+    } catch (err) {
+        console.warn('Could not load jobs from API, using fallback mock data.', err);
+    }
 }
 
 // Apply filters
@@ -306,7 +329,7 @@ function toggleSaveJob(jobId) {
 
 // Navigate to job details
 function goToJobDetails(jobId) {
-    window.location.href = `job-details.html?id=${jobId}`;
+    window.location.href = `/job-details/?id=${jobId}`;
 }
 
 // Clear filters
@@ -318,7 +341,7 @@ function clearFilters() {
 }
 
 // Event listeners
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     // Apply URL params if present
     const params = getUrlParams();
     if (params.search) {
@@ -337,6 +360,8 @@ document.addEventListener('DOMContentLoaded', () => {
         el.addEventListener('change', applyFilters);
     });
     document.getElementById('clearFilters')?.addEventListener('click', clearFilters);
+
+    await loadJobsFromApi();
 
     // Initial render
     applyFilters();

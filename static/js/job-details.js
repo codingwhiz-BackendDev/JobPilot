@@ -103,12 +103,23 @@ function getJobId() {
 }
 
 // Render job details
-function renderJobDetails() {
+async function renderJobDetails() {
     const jobId = getJobId();
-    const job = jobsDatabase[jobId];
+    let job = null;
+
+    // Prefer real data from Django.
+    try {
+        const res = await fetch(`/api/jobs/${jobId}/`);
+        if (res.ok) job = await res.json();
+    } catch (err) {
+        // Ignore and fallback to mock.
+        console.warn('Could not load job details from API, using fallback mock data.', err);
+    }
+
+    if (!job) job = jobsDatabase[jobId];
 
     if (!job) {
-        document.body.innerHTML = '<div class="container" style="text-align: center; padding: 3rem;"><h2>Job not found</h2><a href="jobs.html" class="btn-primary">Back to Jobs</a></div>';
+        document.body.innerHTML = '<div class="container" style="text-align: center; padding: 3rem;"><h2>Job not found</h2><a href="/jobs/" class="btn-primary">Back to Jobs</a></div>';
         return;
     }
 
@@ -161,13 +172,15 @@ function renderJobDetails() {
     // Render responsibilities
     const respEl = document.getElementById('responsibilities');
     if (respEl) {
-        respEl.innerHTML = job.responsibilities.map(item => `<li>${item}</li>`).join('');
+        const responsibilities = job.responsibilities || [];
+        respEl.innerHTML = responsibilities.map(item => `<li>${item}</li>`).join('');
     }
 
     // Render requirements
     const reqEl = document.getElementById('requirements');
     if (reqEl) {
-        reqEl.innerHTML = job.requirements.map(item => `<li>${item}</li>`).join('');
+        const requirements = job.requirements || [];
+        reqEl.innerHTML = requirements.map(item => `<li>${item}</li>`).join('');
     }
 
     // Render sidebar
@@ -198,26 +211,29 @@ function renderJobDetails() {
     // Render company card
     const companyEl = document.getElementById('companyCard');
     if (companyEl) {
+        const aboutText = job.about || jobsDatabase[jobId]?.about || 'A great company with amazing opportunities.';
         companyEl.innerHTML = `
             <div class="company-logo-large">${job.logo}</div>
             <h3>${job.company}</h3>
-            <p style="margin-bottom: 1rem;">${jobsDatabase[jobId]?.about || 'A great company with amazing opportunities.'}</p>
-            <button class="btn-secondary btn-full" onclick="window.location.href='companies.html'">View All Jobs</button>
+            <p style="margin-bottom: 1rem;">${aboutText}</p>
+            <button class="btn-secondary btn-full" onclick="window.location.href='/companies/'">View All Jobs</button>
         `;
     }
 
     // Render related jobs
     const relatedEl = document.getElementById('relatedJobs');
     if (relatedEl) {
-        const relatedJobs = Object.values(jobsDatabase)
-            .filter(j => j.company === job.company && j.id !== jobId)
-            .slice(0, 3);
+        const relatedJobs = job.related_jobs && Array.isArray(job.related_jobs)
+            ? job.related_jobs
+            : Object.values(jobsDatabase)
+                .filter(j => j.company === job.company && j.id !== jobId)
+                .slice(0, 3);
 
         if (relatedJobs.length === 0) {
             relatedEl.innerHTML = '<p style="color: var(--text-secondary);">No other jobs from this company at the moment.</p>';
         } else {
             relatedEl.innerHTML = relatedJobs.map(relatedJob => `
-                <div class="job-card" onclick="window.location.href='job-details.html?id=${relatedJob.id}'" style="cursor: pointer;">
+                <div class="job-card" onclick="window.location.href='/job-details/?id=${relatedJob.id}'" style="cursor: pointer;">
                     <div class="job-title">${relatedJob.title}</div>
                     <div style="color: var(--text-secondary); margin-bottom: 0.75rem;">${relatedJob.location}</div>
                     <div style="color: var(--primary); font-weight: 600;">${relatedJob.salary}</div>
@@ -285,4 +301,6 @@ function shareJob(platform) {
 }
 
 // Initialize on page load
-document.addEventListener('DOMContentLoaded', renderJobDetails);
+document.addEventListener('DOMContentLoaded', () => {
+    renderJobDetails();
+});

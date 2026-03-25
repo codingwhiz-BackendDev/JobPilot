@@ -76,11 +76,11 @@ const mockCompanies = [
 ];
 
 // Render featured jobs
-function renderFeaturedJobs() {
+function renderFeaturedJobs(jobs = mockJobs) {
     const container = document.getElementById('featuredJobs');
     if (!container) return;
 
-    container.innerHTML = mockJobs.slice(0, 3).map(job => `
+    container.innerHTML = jobs.slice(0, 3).map(job => `
         <div class="job-card animate-cardEntrance" onclick="goToJobDetails(${job.id})">
             <div class="job-header">
                 <div class="company-logo">${job.logo}</div>
@@ -114,6 +114,19 @@ function renderFeaturedJobs() {
             </div>
         </div>
     `).join('');
+}
+
+// Load featured jobs from Django backend.
+async function loadFeaturedJobsFromApi() {
+    try {
+        const res = await fetch('/api/jobs/featured/?limit=3');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        if (data && Array.isArray(data.jobs) && data.jobs.length > 0) return data.jobs;
+    } catch (err) {
+        console.warn('Could not load featured jobs from API, using fallback mock data.', err);
+    }
+    return mockJobs.slice(0, 3);
 }
 
 // Render trending companies
@@ -169,11 +182,11 @@ function searchJobs() {
 
 // Navigate to job details
 function goToJobDetails(jobId) {
-    window.location.href = `job-details.html?id=${jobId}`;
+    window.location.href = `/job-details/?id=${jobId}`;
 }
 
 // Allow Enter key in search
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const heroSearch = document.getElementById('heroSearch');
     if (heroSearch) {
         heroSearch.addEventListener('keypress', (e) => {
@@ -184,7 +197,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Render components
-    renderFeaturedJobs();
+    const featuredJobs = await loadFeaturedJobsFromApi();
+    renderFeaturedJobs(featuredJobs);
     renderTrendingCompanies();
 
     // Add stagger animation class
