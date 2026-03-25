@@ -1,8 +1,4 @@
-/* ============================================
-   JOB DETAILS PAGE LOGIC
-   ============================================ */
-
-// Mock detailed job data
+ 
 const jobsDatabase = {
     1: {
         id: 1,
