@@ -1,0 +1,203 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JobPilot - Find Your Perfect Remote Job</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/animations.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/pages.css' %}" />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="container navbar-content">
+        <div class="logo">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <rect width="32" height="32" rx="8" fill="url(#gradient)" />
+            <path d="M16 8L24 16L16 24L8 16Z" fill="white" opacity="0.9" />
+            <defs>
+              <linearGradient id="gradient" x1="0" y1="0" x2="32" y2="32">
+                <stop offset="0%" stop-color="#6366f1" />
+                <stop offset="100%" stop-color="#8b5cf6" />
+              </linearGradient>
+            </defs>
+          </svg>
+          <span>JobPilot</span>
+        </div>
+        <div class="nav-links">
+          <a href="#explore">Explore</a>
+          <a href="companies.html">Companies</a>
+          <a href="about.html">About</a>
+        </div>
+        <div class="nav-actions">
+          <button
+            class="theme-toggle"
+            id="themeToggle"
+            aria-label="Toggle dark mode"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+          </button>
+          <a href="saved-jobs.html" class="btn-secondary">Saved Jobs</a>
+          <a href="jobs.html" class="btn-primary">Browse Jobs</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content animate-fadeInUp">
+          <h1 class="hero-title">
+            Find Your Perfect <span class="gradient-text">Remote Job</span>
+          </h1>
+          <p class="hero-subtitle">
+            Discover thousands of remote opportunities from companies worldwide.
+            Work from anywhere, grow everywhere.
+          </p>
+
+          <!-- Search Bar -->
+          <div class="search-container">
+            <div class="search-bar">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input
+                type="text"
+                placeholder="Job title or keyword..."
+                id="heroSearch"
+                class="search-input"
+              />
+              <select id="heroLocation" class="location-select">
+                <option value="">All Locations</option>
+                <option value="USA">USA</option>
+                <option value="UK">UK</option>
+                <option value="Canada">Canada</option>
+                <option value="Remote">Remote</option>
+              </select>
+              <button class="btn-primary" onclick="searchJobs()">Search</button>
+            </div>
+          </div>
+
+          <!-- Stats -->
+          <div class="hero-stats">
+            <div class="stat">
+              <div class="stat-number">2.5K+</div>
+              <div class="stat-label">Active Jobs</div>
+            </div>
+            <div class="stat">
+              <div class="stat-number">500+</div>
+              <div class="stat-label">Companies</div>
+            </div>
+            <div class="stat">
+              <div class="stat-number">50K+</div>
+              <div class="stat-label">Happy Hires</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Jobs -->
+    <section class="featured-jobs" id="explore">
+      <div class="container">
+        <div class="section-header">
+          <h2>Featured Jobs</h2>
+          <a href="jobs.html" class="view-all">View All →</a>
+        </div>
+        <div class="jobs-grid stagger" id="featuredJobs">
+          <!-- Jobs loaded by JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Trending Companies -->
+    <section class="trending-companies">
+      <div class="container">
+        <div class="section-header">
+          <h2>Trending Companies</h2>
+          <a href="companies.html" class="view-all">View All →</a>
+        </div>
+        <div class="companies-grid stagger" id="trendingCompanies">
+          <!-- Companies loaded by JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+      <div class="container">
+        <div class="cta-content">
+          <h2>Ready to Land Your Dream Remote Job?</h2>
+          <p>
+            Join thousands of professionals finding their perfect fit on
+            JobPilot
+          </p>
+          <a href="jobs.html" class="btn-primary btn-lg">Start Exploring</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>JobPilot</h3>
+            <p>
+              Connecting remote talent with amazing opportunities worldwide.
+            </p>
+          </div>
+          <div class="footer-section">
+            <h4>Quick Links</h4>
+            <ul>
+              <li><a href="jobs.html">Browse Jobs</a></li>
+              <li><a href="companies.html">Companies</a></li>
+              <li><a href="about.html">About Us</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Resources</h4>
+            <ul>
+              <li><a href="#blog">Blog</a></li>
+              <li><a href="#guide">Career Guide</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2024 JobPilot. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="{% static 'js/theme.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+  </body>
+</html>
