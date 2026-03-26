@@ -1,249 +1,229 @@
 {% load static %}
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Browse Jobs - JobPilot</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/animations.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/pages.css' %}" />
-  </head>
-  <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-      <div class="container navbar-content">
-        <div class="logo">
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-            <rect width="32" height="32" rx="8" fill="url(#gradient)" />
-            <path d="M16 8L24 16L16 24L8 16Z" fill="white" opacity="0.9" />
-            <defs>
-              <linearGradient id="gradient" x1="0" y1="0" x2="32" y2="32">
-                <stop offset="0%" stop-color="#6366f1" />
-                <stop offset="100%" stop-color="#8b5cf6" />
-              </linearGradient>
-            </defs>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Browse Jobs - JobPilot</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/animations.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/pages.css' %}" />
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container navbar-content">
+      <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="8" fill="url(#gradient)" />
+          <path d="M16 8L24 16L16 24L8 16Z" fill="white" opacity="0.9" />
+          <defs>
+            <linearGradient id="gradient" x1="0" y1="0" x2="32" y2="32">
+              <stop offset="0%" stop-color="#6366f1" />
+              <stop offset="100%" stop-color="#8b5cf6" />
+            </linearGradient>
+          </defs>
+        </svg>
+        <span>JobPilot</span>
+      </div>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/companies/">Companies</a>
+        <a href="/about/">About</a>
+      </div>
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
           </svg>
-          <span>JobPilot</span>
-        </div>
-        <div class="nav-links">
-          <a href="/">Home</a>
-          <a href="/companies/">Companies</a>
-          <a href="/about/">About</a>
-        </div>
-        <div class="nav-actions">
-          <button
-            class="theme-toggle"
-            id="themeToggle"
-            aria-label="Toggle dark mode"
-          >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <circle cx="12" cy="12" r="5"></circle>
-              <line x1="12" y1="1" x2="12" y2="3"></line>
-              <line x1="12" y1="21" x2="12" y2="23"></line>
-              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-              <line x1="1" y1="12" x2="3" y2="12"></line>
-              <line x1="21" y1="12" x2="23" y2="12"></line>
-              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-            </svg>
-          </button>
-          <a href="/saved-jobs/" class="btn-secondary">Saved Jobs</a>
+        </button>
+        <a href="/saved-jobs/" class="btn-secondary">Saved Jobs</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <section class="page-header">
+    <div class="container">
+      <h1>Find Your Next Opportunity</h1>
+      <p>Browse from thousands of remote job listings</p>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <div class="container jobs-container">
+    <aside class="sidebar">
+      <div class="filters-header">
+        <h3>Filters</h3>
+        <button id="clearFilters" class="btn-text">Clear All</button>
+      </div>
+
+      <!-- Search Filter -->
+      <div class="filter-group">
+        <label class="filter-label">Search</label>
+        <input type="text" id="searchFilter" placeholder="Job title..." class="filter-input" />
+      </div>
+
+      <!-- Location Filter -->
+      <div class="filter-group">
+        <label class="filter-label">Location</label>
+        <div class="filter-options">
+          <label class="filter-checkbox">
+            <input type="checkbox" value="USA" class="location-filter" />
+            <span>USA</span>
+          </label>
+          <label class="filter-checkbox">
+            <input type="checkbox" value="UK" class="location-filter" />
+            <span>UK</span>
+          </label>
+          <label class="filter-checkbox">
+            <input type="checkbox" value="Canada" class="location-filter" />
+            <span>Canada</span>
+          </label>
+          <label class="filter-checkbox">
+            <input type="checkbox" value="Remote" class="location-filter" />
+            <span>Remote</span>
+          </label>
         </div>
       </div>
-    </nav>
 
-    <!-- Page Header -->
-    <section class="page-header">
-      <div class="container">
-        <h1>Find Your Next Opportunity</h1>
-        <p>Browse from thousands of remote job listings</p>
+      <!-- Salary Filter -->
+      <div class="filter-group">
+        <label class="filter-label">Salary Range</label>
+        <div class="filter-options">
+          <label class="filter-checkbox">
+            <input type="checkbox" value="0-50k" class="salary-filter" />
+            <span>$0 - $50K</span>
+          </label>
+          <label class="filter-checkbox">
+            <input type="checkbox" value="50k-100k" class="salary-filter" />
+            <span>$50K - $100K</span>
+          </label>
+          <label class="filter-checkbox">
+            <input type="checkbox" value="100k-150k" class="salary-filter" />
+            <span>$100K - $150K</span>
+          </label>
+          <label class="filter-checkbox">
+            <input type="checkbox" value="150k+" class="salary-filter" />
+            <span>$150K+</span>
+          </label>
+        </div>
       </div>
-    </section>
 
-    <!-- Main Content -->
-    <div class="container jobs-container">
-      <aside class="sidebar">
-        <div class="filters-header">
-          <h3>Filters</h3>
-          <button id="clearFilters" class="btn-text">Clear All</button>
+      <!-- Job Type Filter -->
+      <div class="filter-group">
+        <label class="filter-label">Job Type</label>
+        <div class="filter-options">
+          <label class="filter-checkbox">
+            <input type="checkbox" value="Full-time" class="type-filter" />
+            <span>Full-time</span>
+          </label>
+          <label class="filter-checkbox">
+            <input type="checkbox" value="Part-time" class="type-filter" />
+            <span>Part-time</span>
+          </label>
+          <label class="filter-checkbox">
+            <input type="checkbox" value="Contract" class="type-filter" />
+            <span>Contract</span>
+          </label>
         </div>
+      </div>
+    </aside>
 
-        <!-- Search Filter -->
-        <div class="filter-group">
-          <label class="filter-label">Search</label>
-          <input
-            type="text"
-            id="searchFilter"
-            placeholder="Job title..."
-            class="filter-input"
-          />
-        </div>
+    <main class="jobs-main">
+      <!-- Search Bar -->
+      <form action="" method="POST">
+        {% csrf_token %}
 
-        <!-- Location Filter -->
-        <div class="filter-group">
-          <label class="filter-label">Location</label>
-          <div class="filter-options">
-            <label class="filter-checkbox">
-              <input type="checkbox" value="USA" class="location-filter" />
-              <span>USA</span>
-            </label>
-            <label class="filter-checkbox">
-              <input type="checkbox" value="UK" class="location-filter" />
-              <span>UK</span>
-            </label>
-            <label class="filter-checkbox">
-              <input type="checkbox" value="Canada" class="location-filter" />
-              <span>Canada</span>
-            </label>
-            <label class="filter-checkbox">
-              <input type="checkbox" value="Remote" class="location-filter" />
-              <span>Remote</span>
-            </label>
-          </div>
-        </div>
-
-        <!-- Salary Filter -->
-        <div class="filter-group">
-          <label class="filter-label">Salary Range</label>
-          <div class="filter-options">
-            <label class="filter-checkbox">
-              <input type="checkbox" value="0-50k" class="salary-filter" />
-              <span>$0 - $50K</span>
-            </label>
-            <label class="filter-checkbox">
-              <input type="checkbox" value="50k-100k" class="salary-filter" />
-              <span>$50K - $100K</span>
-            </label>
-            <label class="filter-checkbox">
-              <input type="checkbox" value="100k-150k" class="salary-filter" />
-              <span>$100K - $150K</span>
-            </label>
-            <label class="filter-checkbox">
-              <input type="checkbox" value="150k+" class="salary-filter" />
-              <span>$150K+</span>
-            </label>
-          </div>
-        </div>
-
-        <!-- Job Type Filter -->
-        <div class="filter-group">
-          <label class="filter-label">Job Type</label>
-          <div class="filter-options">
-            <label class="filter-checkbox">
-              <input type="checkbox" value="Full-time" class="type-filter" />
-              <span>Full-time</span>
-            </label>
-            <label class="filter-checkbox">
-              <input type="checkbox" value="Part-time" class="type-filter" />
-              <span>Part-time</span>
-            </label>
-            <label class="filter-checkbox">
-              <input type="checkbox" value="Contract" class="type-filter" />
-              <span>Contract</span>
-            </label>
-          </div>
-        </div>
-      </aside>
-
-      <main class="jobs-main">
-        <!-- Search Bar -->
         <div class="jobs-search">
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
-          <input
-            type="text"
-            id="mainSearch"
-            placeholder="Search jobs by title or company..."
-            class="search-input"
-          />
+
+
+          <input type="text" id="mainSearch" name="query" placeholder="Search jobs by title or company..."
+            class="search-input" />
         </div>
 
-        <!-- Results Count -->
-        <div class="results-info" id="resultsInfo">
-          <!-- Updated by JavaScript -->
-        </div>
+      </form>
+      <!-- Results Count -->
+      <div class="results-info" id="resultsInfo">
+        <!-- Updated by JavaScript -->
+      </div>
 
-        <!-- Jobs List -->
-        <div class="jobs-list">
-          {% if jobs %} {% for job in jobs %}
-          <div class="job-card">
-            <h3>{{ job.title }}</h3>
-            <p>{{ job.company }}</p>
-            <p>{{ job.location }}</p>
-            <a href="{{ job.link }}" target="_blank" class="btn-primary"
-              >Apply</a
-            >
-          </div>
-          {% endfor %} {% else %}
-          <p>No jobs found.</p>
-          {% endif %}
+      <!-- Jobs List -->
+      <div class="jobs-list">
+        {% if jobs %} {% for job in jobs %}
+        <div class="job-card">
+          <h3>{{ job.title }}</h3>
+          <p>{{ job.company }}</p>
+          <p>{{ job.location }}</p>
+          <a href="{{ job.link }}" target="_blank" class="btn-primary">Apply</a>
         </div>
+        {% endfor %} {% else %}
+        <p>No jobs found.</p>
+        {% endif %}
+      </div>
 
-        <!-- Loading Skeleton -->
-        <div id="loadingSkeleton" style="display: none">
-          <div class="skeleton-card"></div>
-          <div class="skeleton-card"></div>
-          <div class="skeleton-card"></div>
-        </div>
+      <!-- Loading Skeleton -->
+      <div id="loadingSkeleton" style="display: none">
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+      </div>
 
-        <!-- Pagination -->
-        <div class="pagination" id="pagination">
-          <!-- Pagination loaded by JavaScript -->
-        </div>
-      </main>
-    </div>
+      <!-- Pagination -->
+      <div class="pagination" id="pagination">
+        <!-- Pagination loaded by JavaScript -->
+      </div>
+    </main>
+  </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-      <div class="container">
-        <div class="footer-content">
-          <div class="footer-section">
-            <h3>JobPilot</h3>
-            <p>
-              Connecting remote talent with amazing opportunities worldwide.
-            </p>
-          </div>
-          <div class="footer-section">
-            <h4>Quick Links</h4>
-            <ul>
-              <li><a href="index.html">Home</a></li>
-              <li><a href="companies.html">Companies</a></li>
-              <li><a href="about.html">About Us</a></li>
-            </ul>
-          </div>
-          <div class="footer-section">
-            <h4>Resources</h4>
-            <ul>
-              <li><a href="#blog">Blog</a></li>
-              <li><a href="#guide">Career Guide</a></li>
-              <li><a href="#contact">Contact</a></li>
-            </ul>
-          </div>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>JobPilot</h3>
+          <p>
+            Connecting remote talent with amazing opportunities worldwide.
+          </p>
         </div>
-        <div class="footer-bottom">
-          <p>&copy; 2024 JobPilot. All rights reserved.</p>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="companies.html">Companies</a></li>
+            <li><a href="about.html">About Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="#blog">Blog</a></li>
+            <li><a href="#guide">Career Guide</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
         </div>
       </div>
-    </footer>
+      <div class="footer-bottom">
+        <p>&copy; 2024 JobPilot. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
 
-    <script src="{% static 'js/theme.js' %}"></script> 
-  </body>
+  <script src="{% static 'js/theme.js' %}"></script>
+</body>
+
 </html>
