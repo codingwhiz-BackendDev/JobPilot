@@ -52,43 +52,43 @@ def jobs(request):
             # -------------------------
             # RemoteOK
             # -------------------------
-            # print("\nFetching jobs from RemoteOK...")
-            # response = requests.get(
-            #     "https://remoteok.com/api",
-            #     headers={"User-Agent": "Mozilla/5.0"},
-            #     timeout=10
-            # )
-            # data = response.json()
+            print("\nFetching jobs from RemoteOK...")
+            response = requests.get(
+                "https://remoteok.com/api",
+                headers={"User-Agent": "Mozilla/5.0"},
+                timeout=10
+            )
+            data = response.json()
 
-            # print("RemoteOK jobs received:", len(data) - 1)
+            print("RemoteOK jobs received:", len(data) - 1)
 
-            # for job in data[1:]:
-            #     title = (job.get("position") or "").lower()
-            #     company = job.get("company") or "Unknown"
-            #     location = (job.get("location") or "remote").lower()
-            #     link = job.get("url")
+            for job in data[1:]:
+                title = (job.get("position") or "").lower()
+                company = job.get("company") or "Unknown"
+                location = (job.get("location") or "remote").lower()
+                link = job.get("url")
 
-            #     if search_words and not any(word in title for word in search_words):
-            #         continue
+                if search_words and not any(word in title for word in search_words):
+                    continue
 
-            #     job_obj, created = Job.objects.get_or_create(
-            #         link=link,
-            #         defaults={
-            #             "title": title.title(),
-            #             "company": company,
-            #             "location": location.title(),
-            #         }
-            #     )
+                job_obj, created = Job.objects.get_or_create(
+                    link=link,
+                    defaults={
+                        "title": title.title(),
+                        "company": company,
+                        "location": location.title(),
+                    }
+                )
 
-            #     jobs_list.append({
-            #         "title": job_obj.title,
-            #         "company": job_obj.company,
-            #         "location": job_obj.location,
-            #         "link": job_obj.link
-            #     })
+                jobs_list.append({
+                    "title": job_obj.title,
+                    "company": job_obj.company,
+                    "location": job_obj.location,
+                    "link": job_obj.link
+                })
 
-            #     if created:
-            #         print("RemoteOK NEW JOB:", job_obj)
+                if created:
+                    print("RemoteOK NEW JOB:", job_obj)
 
             # -------------------------
             # Remotive
@@ -172,103 +172,103 @@ def jobs(request):
             # -------------------------
             # Remote.co (with retry — up to 3 attempts)
             # -------------------------
-            print("\nFetching jobs from Remote.co...")
+            # print("\nFetching jobs from Remote.co...")
 
-            REMOTE_CO_HEADERS = {
-                "User-Agent": (
-                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                    "AppleWebKit/537.36 (KHTML, like Gecko) "
-                    "Chrome/120.0.0.0 Safari/537.36"
-                ),
-                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-                "Accept-Language": "en-US,en;q=0.9",
-                "Accept-Encoding": "gzip, deflate, br",
-                "Connection": "keep-alive",
-            }
+            # REMOTE_CO_HEADERS = {
+            #     "User-Agent": (
+            #         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            #         "AppleWebKit/537.36 (KHTML, like Gecko) "
+            #         "Chrome/120.0.0.0 Safari/537.36"
+            #     ),
+            #     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            #     "Accept-Language": "en-US,en;q=0.9",
+            #     "Accept-Encoding": "gzip, deflate, br",
+            #     "Connection": "keep-alive",
+            # }
 
-            remote_co_query = query.replace(" ", "+")
-            remote_co_url = f"https://remote.co/remote-jobs/search/?search_keywords={remote_co_query}"
-            remote_co_response = None
+            # remote_co_query = query.replace(" ", "+")
+            # remote_co_url = f"https://remote.co/remote-jobs/search/?search_keywords={remote_co_query}"
+            # remote_co_response = None
 
-            for attempt in range(1, 4):  # 3 attempts max
-                try:
-                    print(f"Remote.co attempt {attempt}...")
-                    remote_co_response = requests.get(
-                        remote_co_url,
-                        headers=REMOTE_CO_HEADERS,
-                        timeout=10,
-                    )
-                    if remote_co_response.status_code == 200:
-                        print("Remote.co succeeded on attempt", attempt)
-                        break
-                    else:
-                        print(f"Remote.co attempt {attempt} returned status {remote_co_response.status_code}")
-                except requests.exceptions.Timeout:
-                    print(f"Remote.co attempt {attempt} timed out.")
-                except requests.exceptions.RequestException as e:
-                    print(f"Remote.co attempt {attempt} error: {e}")
-                    break  # non-recoverable error, stop retrying
+            # for attempt in range(1, 4):  # 3 attempts max
+            #     try:
+            #         print(f"Remote.co attempt {attempt}...")
+            #         remote_co_response = requests.get(
+            #             remote_co_url,
+            #             headers=REMOTE_CO_HEADERS,
+            #             timeout=10,
+            #         )
+            #         if remote_co_response.status_code == 200:
+            #             print("Remote.co succeeded on attempt", attempt)
+            #             break
+            #         else:
+            #             print(f"Remote.co attempt {attempt} returned status {remote_co_response.status_code}")
+            #     except requests.exceptions.Timeout:
+            #         print(f"Remote.co attempt {attempt} timed out.")
+            #     except requests.exceptions.RequestException as e:
+            #         print(f"Remote.co attempt {attempt} error: {e}")
+            #         break  # non-recoverable error, stop retrying
 
-            if remote_co_response and remote_co_response.status_code == 200:
-                soup = BeautifulSoup(remote_co_response.text, "html.parser")
+            # if remote_co_response and remote_co_response.status_code == 200:
+            #     soup = BeautifulSoup(remote_co_response.text, "html.parser")
 
-                cards = (
-                    soup.select("li.job_listing")
-                    or soup.select(".card.m-0")
-                    or soup.select("[data-job-id]")
-                )
+            #     cards = (
+            #         soup.select("li.job_listing")
+            #         or soup.select(".card.m-0")
+            #         or soup.select("[data-job-id]")
+            #     )
 
-                print("Remote.co jobs found:", len(cards))
+            #     print("Remote.co jobs found:", len(cards))
 
-                for card in cards[:10]:
-                    title_tag = (
-                        card.select_one(".position")
-                        or card.select_one("h2")
-                        or card.select_one("h3")
-                        or card.select_one("a")
-                    )
-                    company_tag = (
-                        card.select_one(".company")
-                        or card.select_one(".company_name")
-                    )
-                    link_tag = card.select_one("a[href]")
+            #     for card in cards[:10]:
+            #         title_tag = (
+            #             card.select_one(".position")
+            #             or card.select_one("h2")
+            #             or card.select_one("h3")
+            #             or card.select_one("a")
+            #         )
+            #         company_tag = (
+            #             card.select_one(".company")
+            #             or card.select_one(".company_name")
+            #         )
+            #         link_tag = card.select_one("a[href]")
 
-                    if not title_tag:
-                        continue
+            #         if not title_tag:
+            #             continue
 
-                    title = title_tag.get_text(strip=True).lower()
-                    company = company_tag.get_text(strip=True) if company_tag else "Unknown"
-                    link = link_tag["href"] if link_tag else ""
+            #         title = title_tag.get_text(strip=True).lower()
+            #         company = company_tag.get_text(strip=True) if company_tag else "Unknown"
+            #         link = link_tag["href"] if link_tag else ""
 
-                    if link and link.startswith("/"):
-                        link = "https://remote.co" + link
+            #         if link and link.startswith("/"):
+            #             link = "https://remote.co" + link
 
-                    if search_words and not any(word in title for word in search_words):
-                        continue
+            #         if search_words and not any(word in title for word in search_words):
+            #             continue
 
-                    if not link:
-                        continue
+            #         if not link:
+            #             continue
 
-                    job_obj, created = Job.objects.get_or_create(
-                        link=link,
-                        defaults={
-                            "title": title.title(),
-                            "company": company,
-                            "location": "Remote",
-                        }
-                    )
+            #         job_obj, created = Job.objects.get_or_create(
+            #             link=link,
+            #             defaults={
+            #                 "title": title.title(),
+            #                 "company": company,
+            #                 "location": "Remote",
+            #             }
+            #         )
 
-                    jobs_list.append({
-                        "title": job_obj.title,
-                        "company": job_obj.company,
-                        "location": job_obj.location,
-                        "link": job_obj.link
-                    })
+            #         jobs_list.append({
+            #             "title": job_obj.title,
+            #             "company": job_obj.company,
+            #             "location": job_obj.location,
+            #             "link": job_obj.link
+            #         })
 
-                    if created:
-                        print("Remote.co NEW JOB:", job_obj)
-            else:
-                print("Remote.co failed after all attempts, skipping.")
+            #         if created:
+            #             print("Remote.co NEW JOB:", job_obj)
+            # else:
+            #     print("Remote.co failed after all attempts, skipping.")
 
             # -------------------------
             # Adzuna
