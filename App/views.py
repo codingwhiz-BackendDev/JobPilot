@@ -1,10 +1,9 @@
-import requests
-import xml.etree.ElementTree as ET
-from bs4 import BeautifulSoup
 from django.shortcuts import render
-from .models import Job
 from django.utils import timezone
 from datetime import timedelta
+import requests
+import xml.etree.ElementTree as ET
+from .models import Job
 
 
 def index(request):
@@ -53,281 +52,347 @@ def jobs(request):
             # RemoteOK
             # -------------------------
             print("\nFetching jobs from RemoteOK...")
-            response = requests.get(
-                "https://remoteok.com/api",
-                headers={"User-Agent": "Mozilla/5.0"},
-                timeout=10
-            )
-            data = response.json()
-
-            print("RemoteOK jobs received:", len(data) - 1)
-
-            for job in data[1:]:
-                title = (job.get("position") or "").lower()
-                company = job.get("company") or "Unknown"
-                location = (job.get("location") or "remote").lower()
-                link = job.get("url")
-
-                if search_words and not any(word in title for word in search_words):
-                    continue
-
-                job_obj, created = Job.objects.get_or_create(
-                    link=link,
-                    defaults={
-                        "title": title.title(),
-                        "company": company,
-                        "location": location.title(),
-                    }
+            try:
+                response = requests.get(
+                    "https://remoteok.com/api",
+                    headers={"User-Agent": "Mozilla/5.0"},
+                    timeout=10
                 )
+                data = response.json()
 
-                jobs_list.append({
-                    "title": job_obj.title,
-                    "company": job_obj.company,
-                    "location": job_obj.location,
-                    "link": job_obj.link
-                })
+                print("RemoteOK jobs received:", len(data) - 1)
 
-                if created:
-                    print("RemoteOK NEW JOB:", job_obj)
+                for job in data[1:]:
+                    title = (job.get("position") or "").lower()
+                    company = job.get("company") or "Unknown"
+                    location = (job.get("location") or "remote").lower()
+                    link = job.get("url")
+
+                    if not link or not title:
+                        continue
+
+                    if search_words and not any(word in title for word in search_words):
+                        continue
+
+                    job_obj, created = Job.objects.get_or_create(
+                        link=link,
+                        defaults={
+                            "title": title.title(),
+                            "company": company,
+                            "location": location.title(),
+                        }
+                    )
+
+                    jobs_list.append({
+                        "title": job_obj.title,
+                        "company": job_obj.company,
+                        "location": job_obj.location,
+                        "link": job_obj.link
+                    })
+
+                    if created:
+                        print("RemoteOK NEW JOB:", job_obj)
+
+            except requests.exceptions.Timeout:
+                print("RemoteOK request timed out.")
+            except requests.exceptions.RequestException as e:
+                print(f"RemoteOK request error: {e}")
+            except Exception as e:
+                print(f"RemoteOK unexpected error: {e}")
 
             # -------------------------
             # Remotive
             # -------------------------
             print("\nFetching jobs from Remotive...")
-            response = requests.get(
-                "https://remotive.com/api/remote-jobs",
-                timeout=10
-            )
-            data = response.json()
-
-            print("Remotive jobs received:", len(data["jobs"]))
-
-            for job in data["jobs"]:
-                title = (job.get("title") or "").lower()
-                company = job.get("company_name") or "Unknown"
-                link = job.get("url")
-
-                if search_words and not any(word in title for word in search_words):
-                    continue
-
-                job_obj, created = Job.objects.get_or_create(
-                    link=link,
-                    defaults={
-                        "title": title.title(),
-                        "company": company,
-                        "location": "Remote",
-                    }
+            try:
+                response = requests.get(
+                    "https://remotive.com/api/remote-jobs",
+                    timeout=10
                 )
+                data = response.json()
 
-                jobs_list.append({
-                    "title": job_obj.title,
-                    "company": job_obj.company,
-                    "location": job_obj.location,
-                    "link": job_obj.link
-                })
+                print("Remotive jobs received:", len(data["jobs"]))
 
-                if created:
-                    print("Remotive NEW JOB:", job_obj)
+                for job in data["jobs"]:
+                    title = (job.get("title") or "").lower()
+                    company = job.get("company_name") or "Unknown"
+                    link = job.get("url")
+
+                    if not link or not title:
+                        continue
+
+                    if search_words and not any(word in title for word in search_words):
+                        continue
+
+                    job_obj, created = Job.objects.get_or_create(
+                        link=link,
+                        defaults={
+                            "title": title.title(),
+                            "company": company,
+                            "location": "Remote",
+                        }
+                    )
+
+                    jobs_list.append({
+                        "title": job_obj.title,
+                        "company": job_obj.company,
+                        "location": job_obj.location,
+                        "link": job_obj.link
+                    })
+
+                    if created:
+                        print("Remotive NEW JOB:", job_obj)
+
+            except requests.exceptions.Timeout:
+                print("Remotive request timed out.")
+            except requests.exceptions.RequestException as e:
+                print(f"Remotive request error: {e}")
+            except Exception as e:
+                print(f"Remotive unexpected error: {e}")
 
             # -------------------------
             # Arbeitnow
             # -------------------------
             print("\nFetching jobs from Arbeitnow...")
-            response = requests.get(
-                "https://www.arbeitnow.com/api/job-board-api",
-                timeout=10
-            )
-            data = response.json()
-
-            print("Arbeitnow jobs received:", len(data["data"]))
-
-            for job in data["data"]:
-                title = (job.get("title") or "").lower()
-                company = job.get("company_name") or "Unknown"
-                location = (job.get("location") or "Remote")
-                link = job.get("url")
-
-                if search_words and not any(word in title for word in search_words):
-                    continue
-
-                job_obj, created = Job.objects.get_or_create(
-                    link=link,
-                    defaults={
-                        "title": title.title(),
-                        "company": company,
-                        "location": location,
-                    }
+            try:
+                response = requests.get(
+                    "https://www.arbeitnow.com/api/job-board-api",
+                    timeout=10
                 )
+                data = response.json()
 
-                jobs_list.append({
-                    "title": job_obj.title,
-                    "company": job_obj.company,
-                    "location": job_obj.location,
-                    "link": job_obj.link
-                })
+                print("Arbeitnow jobs received:", len(data["data"]))
 
-                if created:
-                    print("Arbeitnow NEW JOB:", job_obj)
+                for job in data["data"]:
+                    title = (job.get("title") or "").lower()
+                    company = job.get("company_name") or "Unknown"
+                    location = (job.get("location") or "Remote")
+                    link = job.get("url")
+
+                    if not link or not title:
+                        continue
+
+                    if search_words and not any(word in title for word in search_words):
+                        continue
+
+                    job_obj, created = Job.objects.get_or_create(
+                        link=link,
+                        defaults={
+                            "title": title.title(),
+                            "company": company,
+                            "location": location,
+                        }
+                    )
+
+                    jobs_list.append({
+                        "title": job_obj.title,
+                        "company": job_obj.company,
+                        "location": job_obj.location,
+                        "link": job_obj.link
+                    })
+
+                    if created:
+                        print("Arbeitnow NEW JOB:", job_obj)
+
+            except requests.exceptions.Timeout:
+                print("Arbeitnow request timed out.")
+            except requests.exceptions.RequestException as e:
+                print(f"Arbeitnow request error: {e}")
+            except Exception as e:
+                print(f"Arbeitnow unexpected error: {e}")
 
             # -------------------------
-            # Remote.co (with retry — up to 3 attempts)
+            # Jobicy — FIX: fetch all jobs (no tag filter) then filter locally
+            # The tag param was returning 0 results for most queries
             # -------------------------
-            # print("\nFetching jobs from Remote.co...")
+            print("\nFetching jobs from Jobicy...")
+            try:
+                jobicy_url = "https://jobicy.com/api/v2/remote-jobs?count=50"
 
-            # REMOTE_CO_HEADERS = {
-            #     "User-Agent": (
-            #         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-            #         "AppleWebKit/537.36 (KHTML, like Gecko) "
-            #         "Chrome/120.0.0.0 Safari/537.36"
-            #     ),
-            #     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-            #     "Accept-Language": "en-US,en;q=0.9",
-            #     "Accept-Encoding": "gzip, deflate, br",
-            #     "Connection": "keep-alive",
-            # }
+                response = requests.get(
+                    jobicy_url,
+                    headers={"User-Agent": "Mozilla/5.0"},
+                    timeout=10
+                )
+                data = response.json()
 
-            # remote_co_query = query.replace(" ", "+")
-            # remote_co_url = f"https://remote.co/remote-jobs/search/?search_keywords={remote_co_query}"
-            # remote_co_response = None
+                jobicy_jobs = data.get("jobs", [])
+                print("Jobicy jobs received:", len(jobicy_jobs))
 
-            # for attempt in range(1, 4):  # 3 attempts max
-            #     try:
-            #         print(f"Remote.co attempt {attempt}...")
-            #         remote_co_response = requests.get(
-            #             remote_co_url,
-            #             headers=REMOTE_CO_HEADERS,
-            #             timeout=10,
-            #         )
-            #         if remote_co_response.status_code == 200:
-            #             print("Remote.co succeeded on attempt", attempt)
-            #             break
-            #         else:
-            #             print(f"Remote.co attempt {attempt} returned status {remote_co_response.status_code}")
-            #     except requests.exceptions.Timeout:
-            #         print(f"Remote.co attempt {attempt} timed out.")
-            #     except requests.exceptions.RequestException as e:
-            #         print(f"Remote.co attempt {attempt} error: {e}")
-            #         break  # non-recoverable error, stop retrying
+                for job in jobicy_jobs:
+                    title = (job.get("jobTitle") or "").lower()
+                    company = job.get("companyName") or "Unknown"
+                    location = job.get("jobGeo") or "Remote"
+                    link = job.get("url") or ""
 
-            # if remote_co_response and remote_co_response.status_code == 200:
-            #     soup = BeautifulSoup(remote_co_response.text, "html.parser")
+                    if not link or not title:
+                        continue
 
-            #     cards = (
-            #         soup.select("li.job_listing")
-            #         or soup.select(".card.m-0")
-            #         or soup.select("[data-job-id]")
-            #     )
+                    if search_words and not any(word in title for word in search_words):
+                        continue
 
-            #     print("Remote.co jobs found:", len(cards))
+                    job_obj, created = Job.objects.get_or_create(
+                        link=link,
+                        defaults={
+                            "title": title.title(),
+                            "company": company,
+                            "location": location,
+                        }
+                    )
 
-            #     for card in cards[:10]:
-            #         title_tag = (
-            #             card.select_one(".position")
-            #             or card.select_one("h2")
-            #             or card.select_one("h3")
-            #             or card.select_one("a")
-            #         )
-            #         company_tag = (
-            #             card.select_one(".company")
-            #             or card.select_one(".company_name")
-            #         )
-            #         link_tag = card.select_one("a[href]")
+                    jobs_list.append({
+                        "title": job_obj.title,
+                        "company": job_obj.company,
+                        "location": job_obj.location,
+                        "link": job_obj.link
+                    })
 
-            #         if not title_tag:
-            #             continue
+                    if created:
+                        print("Jobicy NEW JOB:", job_obj)
 
-            #         title = title_tag.get_text(strip=True).lower()
-            #         company = company_tag.get_text(strip=True) if company_tag else "Unknown"
-            #         link = link_tag["href"] if link_tag else ""
+            except requests.exceptions.Timeout:
+                print("Jobicy request timed out.")
+            except requests.exceptions.RequestException as e:
+                print(f"Jobicy request error: {e}")
+            except Exception as e:
+                print(f"Jobicy unexpected error: {e}")
 
-            #         if link and link.startswith("/"):
-            #             link = "https://remote.co" + link
+            # -------------------------
+            # The Muse — FIX: search across multiple pages and pass keyword
+            # as a category hint; filter all results locally by search_words
+            # -------------------------
+            print("\nFetching jobs from The Muse...")
+            try:
+                muse_total = 0
+                for page in range(1, 4):  # fetch pages 1, 2, 3 = up to 60 results
+                    muse_url = (
+                        f"https://www.themuse.com/api/public/jobs"
+                        f"?descending=true&page={page}&per_page=20"
+                    )
 
-            #         if search_words and not any(word in title for word in search_words):
-            #             continue
+                    response = requests.get(
+                        muse_url,
+                        headers={"User-Agent": "Mozilla/5.0"},
+                        timeout=10
+                    )
+                    data = response.json()
+                    muse_jobs = data.get("results", [])
 
-            #         if not link:
-            #             continue
+                    if not muse_jobs:
+                        break
 
-            #         job_obj, created = Job.objects.get_or_create(
-            #             link=link,
-            #             defaults={
-            #                 "title": title.title(),
-            #                 "company": company,
-            #                 "location": "Remote",
-            #             }
-            #         )
+                    for job in muse_jobs:
+                        title = (job.get("name") or "").lower()
+                        company = (job.get("company") or {}).get("name") or "Unknown"
 
-            #         jobs_list.append({
-            #             "title": job_obj.title,
-            #             "company": job_obj.company,
-            #             "location": job_obj.location,
-            #             "link": job_obj.link
-            #         })
+                        locations = job.get("locations") or []
+                        location = locations[0].get("name") if locations else "Remote"
 
-            #         if created:
-            #             print("Remote.co NEW JOB:", job_obj)
-            # else:
-            #     print("Remote.co failed after all attempts, skipping.")
+                        short_name = (job.get("company") or {}).get("short_name") or ""
+                        job_short_name = job.get("short_name") or ""
+                        link = (
+                            f"https://www.themuse.com/jobs/{short_name}/{job_short_name}"
+                            if short_name and job_short_name else ""
+                        )
+
+                        if not link or not title:
+                            continue
+
+                        if search_words and not any(word in title for word in search_words):
+                            continue
+
+                        job_obj, created = Job.objects.get_or_create(
+                            link=link,
+                            defaults={
+                                "title": title.title(),
+                                "company": company,
+                                "location": location,
+                            }
+                        )
+
+                        jobs_list.append({
+                            "title": job_obj.title,
+                            "company": job_obj.company,
+                            "location": job_obj.location,
+                            "link": job_obj.link
+                        })
+
+                        muse_total += 1
+
+                        if created:
+                            print("The Muse NEW JOB:", job_obj)
+
+                print(f"The Muse jobs collected: {muse_total}")
+
+            except requests.exceptions.Timeout:
+                print("The Muse request timed out.")
+            except requests.exceptions.RequestException as e:
+                print(f"The Muse request error: {e}")
+            except Exception as e:
+                print(f"The Muse unexpected error: {e}")
 
             # -------------------------
             # Adzuna
             # -------------------------
             print("\nFetching jobs from Adzuna...")
+            try:
+                ADZUNA_APP_ID = "0b6cb544"
+                ADZUNA_APP_KEY = "8cc0d13f2d15e24bbf813268afaee354"
 
-            ADZUNA_APP_ID = "0b6cb544"
-            ADZUNA_APP_KEY = "8cc0d13f2d15e24bbf813268afaee354"
-
-            adzuna_query = query.replace(" ", "%20")
-            url = (
-                f"https://api.adzuna.com/v1/api/jobs/gb/search/1"
-                f"?app_id={ADZUNA_APP_ID}&app_key={ADZUNA_APP_KEY}"
-                f"&results_per_page=20&what={adzuna_query}"
-            )
-
-            response = requests.get(url, timeout=10)
-            data = response.json()
-
-            results = data.get("results", [])
-            print("Adzuna jobs received:", len(results))
-
-            for job in results:
-                title = (job.get("title") or "").lower()
-                company = (job.get("company") or {}).get("display_name") or "Unknown"
-                location = (job.get("location") or {}).get("display_name") or "Unknown"
-                link = job.get("redirect_url") or job.get("url") or ""
-
-                if search_words and not any(word in title for word in search_words):
-                    continue
-
-                if not link:
-                    continue
-
-                job_obj, created = Job.objects.get_or_create(
-                    link=link,
-                    defaults={
-                        "title": title.title(),
-                        "company": company,
-                        "location": location,
-                    }
+                adzuna_query = query.replace(" ", "%20")
+                url = (
+                    f"https://api.adzuna.com/v1/api/jobs/gb/search/1"
+                    f"?app_id={ADZUNA_APP_ID}&app_key={ADZUNA_APP_KEY}"
+                    f"&results_per_page=20&what={adzuna_query}"
                 )
 
-                jobs_list.append({
-                    "title": job_obj.title,
-                    "company": job_obj.company,
-                    "location": job_obj.location,
-                    "link": job_obj.link
-                })
+                response = requests.get(url, timeout=10)
+                data = response.json()
 
-                if created:
-                    print("Adzuna NEW JOB:", job_obj)
+                results = data.get("results", [])
+                print("Adzuna jobs received:", len(results))
+
+                for job in results:
+                    title = (job.get("title") or "").lower()
+                    company = (job.get("company") or {}).get("display_name") or "Unknown"
+                    location = (job.get("location") or {}).get("display_name") or "Unknown"
+                    link = job.get("redirect_url") or job.get("url") or ""
+
+                    if search_words and not any(word in title for word in search_words):
+                        continue
+
+                    if not link:
+                        continue
+
+                    job_obj, created = Job.objects.get_or_create(
+                        link=link,
+                        defaults={
+                            "title": title.title(),
+                            "company": company,
+                            "location": location,
+                        }
+                    )
+
+                    jobs_list.append({
+                        "title": job_obj.title,
+                        "company": job_obj.company,
+                        "location": job_obj.location,
+                        "link": job_obj.link
+                    })
+
+                    if created:
+                        print("Adzuna NEW JOB:", job_obj)
+
+            except requests.exceptions.Timeout:
+                print("Adzuna request timed out.")
+            except requests.exceptions.RequestException as e:
+                print(f"Adzuna request error: {e}")
+            except Exception as e:
+                print(f"Adzuna unexpected error: {e}")
 
             # -------------------------
-            # We Work Remotely — via RSS feeds (bypasses Cloudflare 403)
-            #
-            # WWR blocks HTML scraping via Cloudflare, but their RSS feeds are
-            # fully public and never blocked. We fetch all major category feeds
-            # and filter results by the user's search query locally.
+            # We Work Remotely — FIX: added allow_redirects=True to handle
+            # the 301s that were causing 7 feeds to silently fail
             # -------------------------
             print("\nFetching jobs from We Work Remotely (RSS)...")
 
@@ -359,6 +424,7 @@ def jobs(request):
                         feed_url,
                         headers=WWR_RSS_HEADERS,
                         timeout=10,
+                        allow_redirects=True,  # FIX: follow 301 redirects
                     )
 
                     if rss_response.status_code != 200:
@@ -374,12 +440,10 @@ def jobs(request):
                     items = channel.findall("item")
 
                     for item in items:
-                        # RSS <title> format: "CompanyName: Job Title"
                         raw_title = (item.findtext("title") or "").strip()
                         link = (item.findtext("link") or "").strip()
                         region = (item.findtext("region") or "Remote").strip()
 
-                        # Split "Company: Title" format
                         if ": " in raw_title:
                             parts = raw_title.split(": ", 1)
                             company = parts[0].strip()
@@ -391,7 +455,6 @@ def jobs(request):
                         if not link or not title:
                             continue
 
-                        # Filter by search query
                         if search_words and not any(word in title for word in search_words):
                             continue
 
