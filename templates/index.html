@@ -6,147 +6,251 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>JobPilot - Find Your Perfect Remote Job</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
   <link rel="stylesheet" href="{% static 'css/animations.css' %}" />
   <link rel="stylesheet" href="{% static 'css/pages.css' %}" />
 </head>
 
 <body>
+
+  <!-- Ambient background orbs -->
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
   <!-- Navigation -->
-  <nav class="navbar">
+  <nav class="navbar" id="navbar">
     <div class="container navbar-content">
       <div class="logo">
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-          <rect width="32" height="32" rx="8" fill="url(#gradient)" />
-          <path d="M16 8L24 16L16 24L8 16Z" fill="white" opacity="0.9" />
-          <defs>
-            <linearGradient id="gradient" x1="0" y1="0" x2="32" y2="32">
-              <stop offset="0%" stop-color="#6366f1" />
-              <stop offset="100%" stop-color="#8b5cf6" />
-            </linearGradient>
-          </defs>
-        </svg>
-        <span>JobPilot</span>
-      </div>
-      <div class="nav-links">
-        <a href="#explore">Explore</a>
-        <a href="/companies/">Companies</a>
-        <a href="/about/">About</a>
-      </div>
-      <div class="nav-actions">
-        <!-- <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="5"></circle>
-            <line x1="12" y1="1" x2="12" y2="3"></line>
-            <line x1="12" y1="21" x2="12" y2="23"></line>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-            <line x1="1" y1="12" x2="3" y2="12"></line>
-            <line x1="21" y1="12" x2="23" y2="12"></line>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        <div class="logo-icon">
+          <svg width="20" height="20" viewBox="0 0 32 32" fill="none">
+            <path d="M16 4L28 16L16 28L4 16Z" fill="white" />
           </svg>
-        </button> -->
-        <!-- <a href="/saved-jobs/" class="btn-secondary">Saved Jobs</a> -->
-        <a href="/jobs/" class="btn-primary">Browse Jobs</a>
+        </div>
+        <span>Job<em>Pilot</em></span>
       </div>
+
+      <div class="nav-links">
+        <a href="#explore" class="nav-link">Explore</a>
+        <a href="/companies/" class="nav-link">Companies</a>
+        <a href="/about/" class="nav-link">About</a>
+      </div>
+
+      <div class="nav-actions">
+        <a href="/jobs/" class="btn-primary">
+          <span>Browse Jobs</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </nav>
 
   <!-- Hero Section -->
   <section class="hero">
     <div class="container">
-      <div class="hero-content animate-fadeInUp">
-        <h1 class="hero-title">
-          Find Your Perfect <span class="gradient-text">Remote Job</span>
-        </h1>
-        <p class="hero-subtitle">
-          Discover thousands of remote opportunities from companies worldwide.
-          Work from anywhere, grow everywhere.
-        </p>
+      <div class="hero-eyebrow">
+        <span class="eyebrow-dot"></span>
+        <span>2,500+ live opportunities</span>
+      </div>
 
-        <!-- Search Bar -->
-        <form action="/jobs/" method="post">
-          {% csrf_token %}
-          <div class="search-container">
-            <div class="search-bar">
-              <input type="text" name="query" placeholder="Job title or keyword..." class="search-input">
+      <h1 class="hero-title">
+        <span class="title-line" data-text="Find Your">Find Your</span>
+        <span class="title-line accent-line">
+          <span class="gradient-text">Perfect</span>
+          <span class="floating-badge">Remote</span>
+        </span>
+        <span class="title-line" data-text="Career.">Career.</span>
+      </h1>
 
+      <p class="hero-subtitle">
+        Discover curated remote roles from world-class companies.<br>
+        <em>Work from anywhere. Grow without limits.</em>
+      </p>
+
+      <!-- Search Bar -->
+      <form action="/jobs/" method="post" class="search-form">
+        {% csrf_token %}
+        <div class="search-container">
+          <div class="search-inner">
+            <div class="search-field">
+              <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2">
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.35-4.35" />
+              </svg>
+              <input type="text" name="query" placeholder="Role, skill, or keyword..." class="search-input"
+                autocomplete="off">
+            </div>
+            <div class="search-divider"></div>
+            <div class="search-field search-field-sm">
+              <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
               <select name="location" class="location-select">
-                <option value="">All Locations</option>
+                <option value="">Anywhere</option>
                 <option value="USA">USA</option>
                 <option value="UK">UK</option>
                 <option value="Canada">Canada</option>
                 <option value="Remote">Remote</option>
               </select>
-
-              <button type="submit" class="btn-primary">Search</button>
             </div>
-          </div>
-        </form>
-        <!-- Stats -->
-        <div class="hero-stats">
-          <div class="stat">
-            <div class="stat-number">2.5K+</div>
-            <div class="stat-label">Active Jobs</div>
-          </div>
-          <div class="stat">
-            <div class="stat-number">500+</div>
-            <div class="stat-label">Companies</div>
-          </div>
-          <div class="stat">
-            <div class="stat-number">50K+</div>
-            <div class="stat-label">Happy Hires</div>
+            <button type="submit" class="btn-search">
+              <span>Search</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </button>
           </div>
         </div>
+      </form>
+
+      <!-- Stats -->
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-number" data-count="2500">0</div>
+          <div class="stat-label">Active Jobs</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <div class="stat-number" data-count="500">0</div>
+          <div class="stat-label">Companies</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <div class="stat-number" data-count="50000">0</div>
+          <div class="stat-label">Happy Hires</div>
+        </div>
       </div>
+    </div>
+
+    <!-- Decorative hero bottom edge -->
+    <div class="hero-edge" aria-hidden="true">
+      <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,60 C360,0 1080,0 1440,60 L1440,60 L0,60 Z" fill="var(--background)" />
+      </svg>
     </div>
   </section>
 
   <!-- Featured Jobs -->
-  <section class="featured-jobs" id="explore">
+  <section class="featured-jobs section" id="explore">
     <div class="container">
       <div class="section-header">
-        <h2>Featured Jobs</h2>
-        <a href="jobs" class="view-all">View All →</a>
+        <div>
+          <p class="section-label">Handpicked for you</p>
+          <h2 class="section-title">Featured Jobs</h2>
+        </div>
+        <a href="/jobs/" class="view-all">
+          View All
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </a>
       </div>
-      <div class="jobs-grid stagger" id="featuredJobs">
 
+      <div class="jobs-grid" id="featuredJobs">
         {% if jobs %}
         {% for job in jobs %}
-        <div class="job-card">
-          <h3>{{ job.title }}</h3>
-          <p>{{ job.company }}</p>
-          <p>{{ job.location }}</p>
-          <a href="ss{{ job.link }}" target="_blank" class="btn-primary">Apply</a>
-        </div>
+        <article class="job-card" style="--card-delay: {{ forloop.counter0 }}">
+          <div class="card-glow"></div>
+          <div class="job-header">
+            <div class="company-logo">{{ job.company|first }}</div>
+            <div class="job-title-group">
+              <h3 class="job-title">{{ job.title }}</h3>
+              <p class="company-name">{{ job.company }}</p>
+            </div>
+            <button class="save-btn" aria-label="Save job">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+              </svg>
+            </button>
+          </div>
+          <div class="job-meta">
+            <span class="meta-tag">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              {{ job.location }}
+            </span>
+            <span class="meta-tag meta-tag-remote">Remote</span>
+          </div>
+          <div class="job-footer">
+            <a href="{{ job.link }}" target="_blank" class="btn-apply">
+              Apply Now
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+        </article>
         {% endfor %}
         {% else %}
-        <p>No jobs found.</p>
+        <div class="empty-state">
+          <div class="empty-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.35-4.35" />
+            </svg>
+          </div>
+          <p>No jobs found. Check back soon.</p>
+        </div>
         {% endif %}
       </div>
     </div>
   </section>
 
   <!-- Trending Companies -->
-  <section class="trending-companies">
+  <section class="trending-companies section">
     <div class="container">
       <div class="section-header">
-        <h2>Trending Companies</h2>
-        <a href="companies" class="view-all">View All →</a>
+        <div>
+          <p class="section-label">Top employers</p>
+          <h2 class="section-title">Trending Companies</h2>
+        </div>
+        <a href="/companies/" class="view-all">
+          View All
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </a>
       </div>
-      <div class="companies-grid stagger" id="trendingCompanies">
+
+      <div class="companies-grid" id="trendingCompanies">
         {% if jobs %}
         {% for job in jobs %}
-        <div class="job-card">
-          <h3>{{ job.company }}</h3>
-          <p></p>
-          <p>{{ job.location }}</p>
-          <a href="{{ job.link }}" target="_blank" class="btn-primary">View Website</a>
-        </div>
+        <article class="company-card" style="--card-delay: {{ forloop.counter0 }}">
+          <div class="card-glow"></div>
+          <div class="company-logo-large">{{ job.company|first }}</div>
+          <h3 class="company-name-large">{{ job.company }}</h3>
+          <p class="company-location">{{ job.location }}</p>
+          <a href="{{ job.link }}" target="_blank" class="btn-company">
+            Visit Website
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3" />
+            </svg>
+          </a>
+        </article>
         {% endfor %}
         {% else %}
-        <p>No jobs found.</p>
+        <div class="empty-state">
+          <p>No companies found.</p>
+        </div>
         {% endif %}
       </div>
     </div>
@@ -154,14 +258,23 @@
 
   <!-- CTA Section -->
   <section class="cta-section">
-    <div class="container">
-      <div class="cta-content">
-        <h2>Ready to Land Your Dream Remote Job?</h2>
-        <p>
-          Join thousands of professionals finding their perfect fit on
-          JobPilot
-        </p>
-        <a href="/jobs/" class="btn-primary btn-lg">Start Exploring</a>
+    <div class="cta-inner">
+      <div class="cta-orb cta-orb-1"></div>
+      <div class="cta-orb cta-orb-2"></div>
+      <div class="container cta-content">
+        <p class="section-label" style="text-align:center; justify-content:center; display:flex;">Your next chapter
+          starts here</p>
+        <h2 class="cta-title">Ready to Land Your<br><span class="gradient-text">Dream Remote Job?</span></h2>
+        <p class="cta-subtitle">Join thousands of professionals finding their perfect fit on JobPilot.</p>
+        <div class="cta-actions">
+          <a href="/jobs/" class="btn-primary btn-lg">
+            <span>Start Exploring</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </a>
+          <a href="/about/" class="btn-ghost">Learn More</a>
+        </div>
       </div>
     </div>
   </section>
@@ -169,37 +282,134 @@
   <!-- Footer -->
   <footer class="footer">
     <div class="container">
-      <div class="footer-content">
-        <div class="footer-section">
-          <h3>JobPilot</h3>
-          <p>
-            Connecting remote talent with amazing opportunities worldwide.
-          </p>
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="logo">
+            <div class="logo-icon">
+              <svg width="20" height="20" viewBox="0 0 32 32" fill="none">
+                <path d="M16 4L28 16L16 28L4 16Z" fill="white" />
+              </svg>
+            </div>
+            <span>Job<em>Pilot</em></span>
+          </div>
+          <p>Connecting remote talent with extraordinary opportunities worldwide.</p>
         </div>
-        <div class="footer-section">
-          <h4>Quick Links</h4>
-          <ul>
-            <li><a href="jobs">Browse Jobs</a></li>
-            <li><a href="companies">Companies</a></li>
-            <li><a href="about">About Us</a></li>
-          </ul>
-        </div>
-        <div class="footer-section">
-          <h4>Resources</h4>
-          <ul>
-            <li><a href="#blog">Blog</a></li>
-            <li><a href="#guide">Career Guide</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
+
+        <div class="footer-links">
+          <div class="footer-col">
+            <h4>Platform</h4>
+            <ul>
+              <li><a href="/jobs/">Browse Jobs</a></li>
+              <li><a href="/companies/">Companies</a></li>
+              <li><a href="/about/">About Us</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Resources</h4>
+            <ul>
+              <li><a href="#blog">Blog</a></li>
+              <li><a href="#guide">Career Guide</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div>
         </div>
       </div>
+
       <div class="footer-bottom">
         <p>&copy; 2024 JobPilot. All rights reserved.</p>
+        <div class="footer-socials">
+          <a href="#" aria-label="Twitter">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.74l7.73-8.835L1.254 2.25H8.08l4.261 5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+            </svg>
+          </a>
+          <a href="#" aria-label="LinkedIn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z" />
+              <circle cx="4" cy="4" r="2" />
+            </svg>
+          </a>
+        </div>
       </div>
     </div>
   </footer>
 
   <script src="{% static 'js/theme.js' %}"></script>
+  <script>
+    // Navbar scroll effect
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // Animated counters
+    function animateCounter(el) {
+      const target = parseInt(el.dataset.count);
+      const duration = 1800;
+      const step = target / (duration / 16);
+      let current = 0;
+      const timer = setInterval(() => {
+        current += step;
+        if (current >= target) {
+          current = target;
+          clearInterval(timer);
+        }
+        const display = target >= 1000
+          ? (current >= 1000 ? (current / 1000).toFixed(current >= 10000 ? 0 : 1) + 'K+' : Math.floor(current) + '+')
+          : Math.floor(current) + '+';
+        el.textContent = display;
+      }, 16);
+    }
+
+    // Intersection Observer for counters & cards
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          const counter = entry.target.querySelector('[data-count]') || (entry.target.dataset.count ? entry.target : null);
+          if (entry.target.dataset.count) animateCounter(entry.target);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.stat-number, .job-card, .company-card').forEach(el => observer.observe(el));
+
+    // Magnetic effect on CTA buttons
+    document.querySelectorAll('.btn-primary, .btn-apply').forEach(btn => {
+      btn.addEventListener('mousemove', (e) => {
+        const rect = btn.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        btn.style.transform = `translate(${x * 0.12}px, ${y * 0.12}px) translateY(-2px)`;
+      });
+      btn.addEventListener('mouseleave', () => {
+        btn.style.transform = '';
+      });
+    });
+
+    // Save button toggle
+    document.querySelectorAll('.save-btn').forEach(btn => {
+      btn.addEventListener('click', () => btn.classList.toggle('saved'));
+    });
+
+    // Mobile nav toggle
+    document.getElementById('navToggle')?.addEventListener('click', function () {
+      document.querySelector('.nav-links').classList.toggle('open');
+      this.classList.toggle('active');
+    });
+
+    // Parallax on hero orbs
+    document.addEventListener('mousemove', (e) => {
+      const mx = (e.clientX / window.innerWidth - 0.5) * 30;
+      const my = (e.clientY / window.innerHeight - 0.5) * 30;
+      document.querySelectorAll('.orb').forEach((orb, i) => {
+        const factor = (i + 1) * 0.4;
+        orb.style.transform = `translate(${mx * factor}px, ${my * factor}px)`;
+      });
+    });
+  </script>
 </body>
 
 </html>
