@@ -1,184 +1,230 @@
 {% load static %}
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Job Details - JobPilot</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <link rel="stylesheet" href="{% static 'css/animations.css' %}">
-    <link rel="stylesheet" href="{% static 'css/pages.css' %}">
-</head>
-<body>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/animations.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/pages.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/job_details.css' %}" />
+  </head>
+  <body>
     <!-- Navigation -->
     <nav class="navbar">
-        <div class="container navbar-content">
-            <div class="logo">
-                <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                    <rect width="32" height="32" rx="8" fill="url(#gradient)"/>
-                    <path d="M16 8L24 16L16 24L8 16Z" fill="white" opacity="0.9"/>
-                    <defs>
-                        <linearGradient id="gradient" x1="0" y1="0" x2="32" y2="32">
-                            <stop offset="0%" stop-color="#6366f1"/>
-                            <stop offset="100%" stop-color="#8b5cf6"/>
-                        </linearGradient>
-                    </defs>
-                </svg>
-                <span>JobPilot</span>
-            </div>
-            <div class="nav-links">
-                <a href="/">Home</a>
-                <a href="/jobs/">Jobs</a>
-                <a href="/about/">About</a>
-            </div>
-            <div class="nav-actions">
-                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-                <a href="/saved-jobs/" class="btn-secondary">Saved Jobs</a>
-            </div>
+      <div class="container navbar-content">
+        <div class="logo">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <rect width="32" height="32" rx="8" fill="url(#gradient)" />
+            <path d="M16 8L24 16L16 24L8 16Z" fill="white" opacity="0.9" />
+            <defs>
+              <linearGradient id="gradient" x1="0" y1="0" x2="32" y2="32">
+                <stop offset="0%" stop-color="#6366f1" />
+                <stop offset="100%" stop-color="#8b5cf6" />
+              </linearGradient>
+            </defs>
+          </svg>
+          <span>JobPilot</span>
         </div>
+        <div class="nav-links">
+          <a href="/">Home</a>
+          <a href="/jobs/">Jobs</a>
+          <a href="/about/">About</a>
+        </div>
+        <div class="nav-actions">
+          <button
+            class="theme-toggle"
+            id="themeToggle"
+            aria-label="Toggle dark mode"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+          </button>
+          <a href="/saved-jobs/" class="btn-secondary">Saved Jobs</a>
+        </div>
+      </div>
     </nav>
 
     <!-- Main Content -->
     <div class="container job-details-container">
-        <a href="/jobs/" class="back-link">← Back to Jobs</a>
+      <a href="/jobs/" class="back-link">← Back to Jobs</a>
 
-        <div class="job-details-grid">
-            <!-- Main Content -->
-            <main class="job-details-main">
-                <!-- Job Header -->
-                <div class="job-header-detail" id="jobHeader">
-                    <!-- Loaded by JavaScript -->
-                </div>
+      <div class="job-details-grid">
+        <!-- Main Content -->
+        <main class="job-details-main">
+          <!-- Job Header -->
+          <div class="job-header-detail" id="jobHeader">
+            <!-- Loaded by JavaScript -->
+          </div>
 
-                <!-- Job Description -->
-                <section class="job-section">
-                    <h2>About this role</h2>
-                    <div class="job-description" id="jobDescription">
-                        <!-- Loaded by JavaScript -->
-                    </div>
-                </section>
+          <!-- Job Description -->
+          <section class="job-section">
+            <h2>About this role</h2>
+            <div class="job-description" id="jobDescription">
+              <!-- Loaded by JavaScript -->
+            </div>
+          </section>
 
-                <!-- Key Responsibilities -->
-                <section class="job-section">
-                    <h2>Key Responsibilities</h2>
-                    <ul class="responsibility-list" id="responsibilities">
-                        <!-- Loaded by JavaScript -->
-                    </ul>
-                </section>
+          <!-- Key Responsibilities -->
+          <section class="job-section">
+            <h2>Key Responsibilities</h2>
+            <ul class="responsibility-list" id="responsibilities">
+              <!-- Loaded by JavaScript -->
+            </ul>
+          </section>
 
-                <!-- Requirements -->
-                <section class="job-section">
-                    <h2>Requirements</h2>
-                    <ul class="requirement-list" id="requirements">
-                        <!-- Loaded by JavaScript -->
-                    </ul>
-                </section>
+          <!-- Requirements -->
+          <section class="job-section">
+            <h2>Requirements</h2>
+            <ul class="requirement-list" id="requirements">
+              <!-- Loaded by JavaScript -->
+            </ul>
+          </section>
 
-                <!-- Related Jobs -->
-                <section class="job-section">
-                    <h2>More from this company</h2>
-                    <div class="related-jobs" id="relatedJobs">
-                        <!-- Loaded by JavaScript -->
-                    </div>
-                </section>
-            </main>
+          <!-- Related Jobs -->
+          <section class="job-section">
+            <h2>More from this company</h2>
+            <div class="related-jobs" id="relatedJobs">
+              <!-- Loaded by JavaScript -->
+            </div>
+          </section>
+        </main>
 
-            <!-- Sidebar -->
-            <aside class="job-sidebar">
-                <!-- Job Info Card -->
-                <div class="job-info-card glassmorphism">
-                    <div id="sidebarContent">
-                        <!-- Loaded by JavaScript -->
-                    </div>
-                    <div class="card-actions">
-                        <button class="btn-primary btn-full" id="applyBtn">Apply Now</button>
-                        <button class="btn-secondary btn-full" id="saveBtn">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
-                                <polyline points="17 21 17 13 7 13 7 21"></polyline>
-                                <polyline points="7 3 7 8 15 8"></polyline>
-                            </svg>
-                            Save Job
-                        </button>
-                    </div>
-                </div>
+        <!-- Sidebar -->
+        <aside class="job-sidebar">
+          <!-- Job Info Card -->
+          <div class="job-info-card glassmorphism">
+            <div id="sidebarContent">
+              <!-- Loaded by JavaScript -->
+            </div>
+            <div class="card-actions">
+              <button class="btn-primary btn-full" id="applyBtn">
+                Apply Now
+              </button>
+              <button class="btn-secondary btn-full" id="saveBtn">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"
+                  ></path>
+                  <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                  <polyline points="7 3 7 8 15 8"></polyline>
+                </svg>
+                Save Job
+              </button>
+            </div>
+          </div>
 
-                <!-- Company Card -->
-                <div class="company-card glassmorphism" id="companyCard">
-                    <!-- Loaded by JavaScript -->
-                </div>
+          <!-- Company Card -->
+          <div class="company-card glassmorphism" id="companyCard">
+            <!-- Loaded by JavaScript -->
+          </div>
 
-                <!-- Share Card -->
-                <div class="share-card glassmorphism">
-                    <h3>Share this job</h3>
-                    <div class="share-buttons">
-                        <button class="share-btn" onclick="shareJob('twitter')">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2s9 5 20 5a9.5 9.5 0 00-9-5.5c4.75 2.25 7-7 7-7"></path>
-                            </svg>
-                        </button>
-                        <button class="share-btn" onclick="shareJob('linkedin')">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"></path>
-                                <circle cx="4" cy="4" r="2"></circle>
-                            </svg>
-                        </button>
-                        <button class="share-btn" onclick="shareJob('email')">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="2" y="4" width="20" height="16" rx="2"></rect>
-                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </aside>
-        </div>
+          <!-- Share Card -->
+          <div class="share-card glassmorphism">
+            <h3>Share this job</h3>
+            <div class="share-buttons">
+              <button class="share-btn" onclick="shareJob('twitter')">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2s9 5 20 5a9.5 9.5 0 00-9-5.5c4.75 2.25 7-7 7-7"
+                  ></path>
+                </svg>
+              </button>
+              <button class="share-btn" onclick="shareJob('linkedin')">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"
+                  ></path>
+                  <circle cx="4" cy="4" r="2"></circle>
+                </svg>
+              </button>
+              <button class="share-btn" onclick="shareJob('email')">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </aside>
+      </div>
     </div>
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>JobPilot</h3>
-                    <p>Connecting remote talent with amazing opportunities worldwide.</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="jobs.html">Browse Jobs</a></li>
-                        <li><a href="companies.html">Companies</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Resources</h4>
-                    <ul>
-                        <li><a href="#blog">Blog</a></li>
-                        <li><a href="#guide">Career Guide</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 JobPilot. All rights reserved.</p>
-            </div>
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>JobPilot</h3>
+            <p>
+              Connecting remote talent with amazing opportunities worldwide.
+            </p>
+          </div>
+          <div class="footer-section">
+            <h4>Quick Links</h4>
+            <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="jobs.html">Browse Jobs</a></li>
+              <li><a href="companies.html">Companies</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Resources</h4>
+            <ul>
+              <li><a href="#blog">Blog</a></li>
+              <li><a href="#guide">Career Guide</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div>
         </div>
+        <div class="footer-bottom">
+          <p>&copy; 2024 JobPilot. All rights reserved.</p>
+        </div>
+      </div>
     </footer>
 
     <script src="{% static 'js/theme.js' %}"></script>
     <script src="{% static 'js/job-details.js' %}"></script>
-</body>
+  </body>
 </html>

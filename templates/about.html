@@ -1,257 +1,334 @@
 {% load static %}
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>About JobPilot - Remote Job Platform</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <link rel="stylesheet" href="{% static 'css/animations.css' %}">
-    <link rel="stylesheet" href="{% static 'css/pages.css' %}">
-</head>
-<body>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/animations.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/pages.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/about.css' %}" />
+  </head>
+  <body>
     <!-- Navigation -->
     <nav class="navbar">
-        <div class="container navbar-content">
-            <div class="logo">
-                <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                    <rect width="32" height="32" rx="8" fill="url(#gradient)"/>
-                    <path d="M16 8L24 16L16 24L8 16Z" fill="white" opacity="0.9"/>
-                    <defs>
-                        <linearGradient id="gradient" x1="0" y1="0" x2="32" y2="32">
-                            <stop offset="0%" stop-color="#6366f1"/>
-                            <stop offset="100%" stop-color="#8b5cf6"/>
-                        </linearGradient>
-                    </defs>
-                </svg>
-                <span>JobPilot</span>
-            </div>
-            <div class="nav-links">
-                <a href="/">Home</a>
-                <a href="/jobs/">Jobs</a>
-                <a href="/companies/">Companies</a>
-            </div>
-            <div class="nav-actions">
-                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-                <a href="/saved-jobs/" class="btn-secondary">Saved Jobs</a>
-            </div>
+      <div class="container navbar-content">
+        <div class="logo">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <rect width="32" height="32" rx="8" fill="url(#gradient)" />
+            <path d="M16 8L24 16L16 24L8 16Z" fill="white" opacity="0.9" />
+            <defs>
+              <linearGradient id="gradient" x1="0" y1="0" x2="32" y2="32">
+                <stop offset="0%" stop-color="#6366f1" />
+                <stop offset="100%" stop-color="#8b5cf6" />
+              </linearGradient>
+            </defs>
+          </svg>
+          <span>JobPilot</span>
         </div>
+        <div class="nav-links">
+          <a href="/">Home</a>
+          <a href="/jobs/">Jobs</a>
+          <a href="/companies/">Companies</a>
+        </div>
+        <div class="nav-actions">
+          <button
+            class="theme-toggle"
+            id="themeToggle"
+            aria-label="Toggle dark mode"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+          </button>
+          <a href="/saved-jobs/" class="btn-secondary">Saved Jobs</a>
+        </div>
+      </div>
     </nav>
 
     <!-- Hero Section -->
     <section class="about-hero">
-        <div class="container">
-            <h1>About JobPilot</h1>
-            <p class="subtitle">Empowering remote professionals to find their perfect opportunity</p>
-        </div>
+      <div class="container">
+        <h1>About JobPilot</h1>
+        <p class="subtitle">
+          Empowering remote professionals to find their perfect opportunity
+        </p>
+      </div>
     </section>
 
     <!-- Mission Section -->
     <section class="about-section">
-        <div class="container">
-            <div class="about-content">
-                <div class="about-text">
-                    <h2>Our Mission</h2>
-                    <p>
-                        JobPilot exists to revolutionize how talented professionals discover remote work opportunities. 
-                        We believe that work shouldn't be confined to a single location, and that the best talent deserves 
-                        the freedom to work from anywhere.
-                    </p>
-                    <p>
-                        Our platform connects thousands of qualified candidates with innovative companies offering 
-                        genuine remote positions, creating meaningful opportunities for both parties.
-                    </p>
-                </div>
-                <div class="about-image">
-                    <div class="gradient-blob"></div>
-                </div>
-            </div>
+      <div class="container">
+        <div class="about-content">
+          <div class="about-text">
+            <h2>Our Mission</h2>
+            <p>
+              JobPilot exists to revolutionize how talented professionals
+              discover remote work opportunities. We believe that work shouldn't
+              be confined to a single location, and that the best talent
+              deserves the freedom to work from anywhere.
+            </p>
+            <p>
+              Our platform connects thousands of qualified candidates with
+              innovative companies offering genuine remote positions, creating
+              meaningful opportunities for both parties.
+            </p>
+          </div>
+          <div class="about-image">
+            <div class="gradient-blob"></div>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- Values Section -->
     <section class="about-section alt-bg">
-        <div class="container">
-            <h2 class="section-title">Our Values</h2>
-            <div class="values-grid">
-                <div class="value-card glassmorphism">
-                    <div class="value-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path>
-                        </svg>
-                    </div>
-                    <h3>Transparency</h3>
-                    <p>We believe in honest job listings with clear expectations and compensation</p>
-                </div>
-
-                <div class="value-card glassmorphism">
-                    <div class="value-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="9" cy="7" r="4"></circle>
-                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                        </svg>
-                    </div>
-                    <h3>Community</h3>
-                    <p>We foster a supportive community of remote workers helping each other succeed</p>
-                </div>
-
-                <div class="value-card glassmorphism">
-                    <div class="value-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
-                            <polyline points="13 2 13 9 20 9"></polyline>
-                        </svg>
-                    </div>
-                    <h3>Quality</h3>
-                    <p>Every job listing is vetted to ensure legitimate, quality opportunities</p>
-                </div>
-
-                <div class="value-card glassmorphism">
-                    <div class="value-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <polyline points="12 6 12 12 16 14"></polyline>
-                        </svg>
-                    </div>
-                    <h3>Accessibility</h3>
-                    <p>We make it easy for anyone to find and apply for remote opportunities</p>
-                </div>
+      <div class="container">
+        <h2 class="section-title">Our Values</h2>
+        <div class="values-grid">
+          <div class="value-card glassmorphism">
+            <div class="value-icon">
+              <svg
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+                ></path>
+              </svg>
             </div>
+            <h3>Transparency</h3>
+            <p>
+              We believe in honest job listings with clear expectations and
+              compensation
+            </p>
+          </div>
+
+          <div class="value-card glassmorphism">
+            <div class="value-icon">
+              <svg
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </div>
+            <h3>Community</h3>
+            <p>
+              We foster a supportive community of remote workers helping each
+              other succeed
+            </p>
+          </div>
+
+          <div class="value-card glassmorphism">
+            <div class="value-icon">
+              <svg
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"
+                ></path>
+                <polyline points="13 2 13 9 20 9"></polyline>
+              </svg>
+            </div>
+            <h3>Quality</h3>
+            <p>
+              Every job listing is vetted to ensure legitimate, quality
+              opportunities
+            </p>
+          </div>
+
+          <div class="value-card glassmorphism">
+            <div class="value-icon">
+              <svg
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+            <h3>Accessibility</h3>
+            <p>
+              We make it easy for anyone to find and apply for remote
+              opportunities
+            </p>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- Stats Section -->
     <section class="about-section">
-        <div class="container">
-            <h2 class="section-title">By The Numbers</h2>
-            <div class="stats-grid">
-                <div class="stat-box">
-                    <div class="stat-number">2.5K+</div>
-                    <div class="stat-desc">Active Job Listings</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-number">500+</div>
-                    <div class="stat-desc">Companies Hiring</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-number">50K+</div>
-                    <div class="stat-desc">Successful Placements</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-number">150+</div>
-                    <div class="stat-desc">Countries Represented</div>
-                </div>
-            </div>
+      <div class="container">
+        <h2 class="section-title">By The Numbers</h2>
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div class="stat-number">2.5K+</div>
+            <div class="stat-desc">Active Job Listings</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number">500+</div>
+            <div class="stat-desc">Companies Hiring</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number">50K+</div>
+            <div class="stat-desc">Successful Placements</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number">150+</div>
+            <div class="stat-desc">Countries Represented</div>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- Features Section -->
     <section class="about-section alt-bg">
-        <div class="container">
-            <h2 class="section-title">Why Choose JobPilot?</h2>
-            <div class="features-list">
-                <div class="feature-item">
-                    <div class="feature-check">✓</div>
-                    <div class="feature-text">
-                        <h3>Advanced Filtering</h3>
-                        <p>Find jobs that match your skills, location, salary expectations, and job type</p>
-                    </div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-check">✓</div>
-                    <div class="feature-text">
-                        <h3>Saved Jobs</h3>
-                        <p>Bookmark jobs and return to them later. Your perfect job is worth bookmarking</p>
-                    </div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-check">✓</div>
-                    <div class="feature-text">
-                        <h3>Company Insights</h3>
-                        <p>Learn about companies, their culture, and open positions before applying</p>
-                    </div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-check">✓</div>
-                    <div class="feature-text">
-                        <h3>Easy Applications</h3>
-                        <p>Simple one-click applications with minimal friction in the process</p>
-                    </div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-check">✓</div>
-                    <div class="feature-text">
-                        <h3>Mobile Friendly</h3>
-                        <p>Search and apply to jobs on the go with our fully responsive design</p>
-                    </div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-check">✓</div>
-                    <div class="feature-text">
-                        <h3>Dark Mode</h3>
-                        <p>Comfortable browsing experience in any lighting condition</p>
-                    </div>
-                </div>
+      <div class="container">
+        <h2 class="section-title">Why Choose JobPilot?</h2>
+        <div class="features-list">
+          <div class="feature-item">
+            <div class="feature-check">✓</div>
+            <div class="feature-text">
+              <h3>Advanced Filtering</h3>
+              <p>
+                Find jobs that match your skills, location, salary expectations,
+                and job type
+              </p>
             </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-check">✓</div>
+            <div class="feature-text">
+              <h3>Saved Jobs</h3>
+              <p>
+                Bookmark jobs and return to them later. Your perfect job is
+                worth bookmarking
+              </p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-check">✓</div>
+            <div class="feature-text">
+              <h3>Company Insights</h3>
+              <p>
+                Learn about companies, their culture, and open positions before
+                applying
+              </p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-check">✓</div>
+            <div class="feature-text">
+              <h3>Easy Applications</h3>
+              <p>
+                Simple one-click applications with minimal friction in the
+                process
+              </p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-check">✓</div>
+            <div class="feature-text">
+              <h3>Mobile Friendly</h3>
+              <p>
+                Search and apply to jobs on the go with our fully responsive
+                design
+              </p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-check">✓</div>
+            <div class="feature-text">
+              <h3>Dark Mode</h3>
+              <p>Comfortable browsing experience in any lighting condition</p>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- CTA Section -->
     <section class="cta-section">
-        <div class="container">
-            <div class="cta-content">
-                <h2>Ready to Find Your Dream Remote Job?</h2>
-                <p>Join our community of remote professionals today</p>
-                <a href="/jobs/" class="btn-primary btn-lg">Start Browsing</a>
-            </div>
+      <div class="container">
+        <div class="cta-content">
+          <h2>Ready to Find Your Dream Remote Job?</h2>
+          <p>Join our community of remote professionals today</p>
+          <a href="/jobs/" class="btn-primary btn-lg">Start Browsing</a>
         </div>
+      </div>
     </section>
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>JobPilot</h3>
-                    <p>Connecting remote talent with amazing opportunities worldwide.</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="/">Home</a></li>
-                        <li><a href="/jobs/">Browse Jobs</a></li>
-                        <li><a href="/companies/">Companies</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Resources</h4>
-                    <ul>
-                        <li><a href="#blog">Blog</a></li>
-                        <li><a href="#guide">Career Guide</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 JobPilot. All rights reserved.</p>
-            </div>
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>JobPilot</h3>
+            <p>
+              Connecting remote talent with amazing opportunities worldwide.
+            </p>
+          </div>
+          <div class="footer-section">
+            <h4>Quick Links</h4>
+            <ul>
+              <li><a href="/">Home</a></li>
+              <li><a href="/jobs/">Browse Jobs</a></li>
+              <li><a href="/companies/">Companies</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Resources</h4>
+            <ul>
+              <li><a href="#blog">Blog</a></li>
+              <li><a href="#guide">Career Guide</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div>
         </div>
+        <div class="footer-bottom">
+          <p>&copy; 2024 JobPilot. All rights reserved.</p>
+        </div>
+      </div>
     </footer>
 
     <script src="{% static 'js/theme.js' %}"></script>
-</body>
+  </body>
 </html>
