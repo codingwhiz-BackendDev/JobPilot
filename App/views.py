@@ -16,6 +16,17 @@ def jobs(request):
     jobs_list = []
     cached_jobs = None
 
+    if request.method == "GET":
+        jobs_list = list(
+            Job.objects.all()
+            .order_by('-created_at')
+            .values('title', 'company', 'location', 'link')[:50]
+        )
+
+        return render(request, "jobs.html", {
+            "jobs": jobs_list
+        })
+
     if request.method == "POST":
         query = request.POST.get("query", "").lower().strip()
 
@@ -499,14 +510,34 @@ def jobs(request):
         "cached_jobs": cached_jobs
     })
     
+def companies(request):
+    # Pull one representative job per unique company name
+    # so we get location + link without loading every job row
+    from django.db.models import Count, Max
+ 
+    company_data = (
+        Job.objects
+        .values('company', 'location')
+        .annotate(
+            job_count=Count('id'),
+            latest_link=Max('link'),   
+        )
+        .order_by('company')
+    )
+ 
+    return render(request, "companies.html", {
+        "companies": company_data,
+        "total": company_data.count(),
+    })
+ 
+    
 def saved_jobs(request):
     return render(request, "jobs.html")
 
 def job_details(request):
     return render(request, "job_details.html")
 
-def companies(request):
-    return render(request, "companies.html")
+ 
 
 def about(request):
     return render(request, "about.html")

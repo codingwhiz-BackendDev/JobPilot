@@ -2,183 +2,321 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Job Details - JobPilot</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <link rel="stylesheet" href="{% static 'css/animations.css' %}">
-    <link rel="stylesheet" href="{% static 'css/pages.css' %}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Companies - JobPilot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/animations.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/pages.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/companies.css' %}" />
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="container navbar-content">
-            <div class="logo">
-                <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                    <rect width="32" height="32" rx="8" fill="url(#gradient)"/>
-                    <path d="M16 8L24 16L16 24L8 16Z" fill="white" opacity="0.9"/>
-                    <defs>
-                        <linearGradient id="gradient" x1="0" y1="0" x2="32" y2="32">
-                            <stop offset="0%" stop-color="#6366f1"/>
-                            <stop offset="100%" stop-color="#8b5cf6"/>
-                        </linearGradient>
-                    </defs>
-                </svg>
-                <span>JobPilot</span>
-            </div>
-            <div class="nav-links">
-                <a href="/">Home</a>
-                <a href="/jobs/">Jobs</a>
-                <a href="/about/">About</a>
-            </div>
-            <div class="nav-actions">
-                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-                <a href="/saved-jobs/" class="btn-secondary">Saved Jobs</a>
-            </div>
+ 
+  <!-- Ambient background -->
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="grid-overlay"></div>
+  </div>
+ 
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="container navbar-content">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg width="20" height="20" viewBox="0 0 32 32" fill="none">
+            <path d="M16 4L28 16L16 28L4 16Z" fill="white" />
+          </svg>
         </div>
-    </nav>
-
-    <!-- Main Content -->
-    <div class="container job-details-container">
-        <a href="jobs.html" class="back-link">← Back to Jobs</a>
-
-        <div class="job-details-grid">
-            <!-- Main Content -->
-            <main class="job-details-main">
-                <!-- Job Header -->
-                <div class="job-header-detail" id="jobHeader">
-                    <!-- Loaded by JavaScript -->
-                </div>
-
-                <!-- Job Description -->
-                <section class="job-section">
-                    <h2>About this role</h2>
-                    <div class="job-description" id="jobDescription">
-                        <!-- Loaded by JavaScript -->
-                    </div>
-                </section>
-
-                <!-- Key Responsibilities -->
-                <section class="job-section">
-                    <h2>Key Responsibilities</h2>
-                    <ul class="responsibility-list" id="responsibilities">
-                        <!-- Loaded by JavaScript -->
-                    </ul>
-                </section>
-
-                <!-- Requirements -->
-                <section class="job-section">
-                    <h2>Requirements</h2>
-                    <ul class="requirement-list" id="requirements">
-                        <!-- Loaded by JavaScript -->
-                    </ul>
-                </section>
-
-                <!-- Related Jobs -->
-                <section class="job-section">
-                    <h2>More from this company</h2>
-                    <div class="related-jobs" id="relatedJobs">
-                        <!-- Loaded by JavaScript -->
-                    </div>
-                </section>
-            </main>
-
-            <!-- Sidebar -->
-            <aside class="job-sidebar">
-                <!-- Job Info Card -->
-                <div class="job-info-card glassmorphism">
-                    <div id="sidebarContent">
-                        <!-- Loaded by JavaScript -->
-                    </div>
-                    <div class="card-actions">
-                        <button class="btn-primary btn-full" id="applyBtn">Apply Now</button>
-                        <button class="btn-secondary btn-full" id="saveBtn">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
-                                <polyline points="17 21 17 13 7 13 7 21"></polyline>
-                                <polyline points="7 3 7 8 15 8"></polyline>
-                            </svg>
-                            Save Job
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Company Card -->
-                <div class="company-card glassmorphism" id="companyCard">
-                    <!-- Loaded by JavaScript -->
-                </div>
-
-                <!-- Share Card -->
-                <div class="share-card glassmorphism">
-                    <h3>Share this job</h3>
-                    <div class="share-buttons">
-                        <button class="share-btn" onclick="shareJob('twitter')">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2s9 5 20 5a9.5 9.5 0 00-9-5.5c4.75 2.25 7-7 7-7"></path>
-                            </svg>
-                        </button>
-                        <button class="share-btn" onclick="shareJob('linkedin')">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"></path>
-                                <circle cx="4" cy="4" r="2"></circle>
-                            </svg>
-                        </button>
-                        <button class="share-btn" onclick="shareJob('email')">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="2" y="4" width="20" height="16" rx="2"></rect>
-                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </aside>
-        </div>
+        <span>Job<em>Pilot</em></span>
+      </div>
+      <div class="nav-links">
+        <a href="/" class="nav-link">Home</a>
+        <a href="/jobs/" class="nav-link">Jobs</a>
+        <a href="/about/" class="nav-link">About</a>
+      </div>
+      <div class="nav-actions">
+        <a href="/saved-jobs/" class="btn-secondary">Saved Jobs</a>
+        <a href="/jobs/" class="btn-primary">
+          <span>Browse Jobs</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>JobPilot</h3>
-                    <p>Connecting remote talent with amazing opportunities worldwide.</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="jobs.html">Browse Jobs</a></li>
-                        <li><a href="companies.html">Companies</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Resources</h4>
-                    <ul>
-                        <li><a href="#blog">Blog</a></li>
-                        <li><a href="#guide">Career Guide</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </div>
+  </nav>
+ 
+  <!-- Page Header -->
+  <section class="page-header">
+    <div class="container">
+      <h1>Top Remote <span class="gradient-text">Companies</span></h1>
+      <p>{{ total }} companies actively hiring remote talent worldwide</p>
+    </div>
+  </section>
+ 
+  <!-- Main Content -->
+  <div class="container companies-page-container">
+ 
+    <!-- Toolbar -->
+    <div class="companies-toolbar">
+      <div class="companies-search-wrap">
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
+        </svg>
+        <input
+          type="text"
+          id="companySearch"
+          placeholder="Search companies..."
+          class="companies-search-input"
+          autocomplete="off"
+        />
+      </div>
+ 
+      <select id="companiesSort" class="companies-sort">
+        <option value="az">A → Z</option>
+        <option value="za">Z → A</option>
+        <option value="jobs">Most Jobs</option>
+      </select>
+ 
+      <p class="companies-results-count">
+        Showing <span id="visibleCount">{{ total }}</span> companies
+      </p>
+    </div>
+ 
+    <!-- A–Z Index -->
+    <div class="alpha-index" id="alphaIndex">
+      {% for letter in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" %}
+      <button class="alpha-btn" data-letter="{{ letter }}">{{ letter }}</button>
+      {% endfor %}
+      <button class="alpha-btn active" data-letter="all" style="width:auto;padding:0 10px;">All</button>
+    </div>
+ 
+    <!-- Companies Grid -->
+    <div class="companies-page-grid" id="companiesGrid">
+      {% if companies %}
+        {% for co in companies %}
+        <article
+          class="company-page-card"
+          style="--card-delay: {{ forloop.counter0 }}"
+          data-name="{{ co.company|lower }}"
+          data-jobs="{{ co.job_count }}"
+          data-letter="{{ co.company|first|upper }}"
+        >
+          <div class="card-glow"></div>
+ 
+          <div class="cp-card-header">
+            <div class="cp-logo">{{ co.company|first|upper }}</div>
+            <div class="cp-info">
+              <h3 class="cp-name">{{ co.company }}</h3>
+              <span class="cp-location">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                {{ co.location }}
+              </span>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 JobPilot. All rights reserved.</p>
-            </div>
+          </div>
+ 
+          <div class="cp-jobs-count">
+            <span class="cp-jobs-dot"></span>
+            {{ co.job_count }} open role{{ co.job_count|pluralize }}
+          </div>
+ 
+          <div class="cp-tags">
+            <span class="cp-tag cp-tag-remote">Remote</span>
+            <span class="cp-tag">{{ co.location }}</span>
+          </div>
+ 
+          <div class="cp-card-footer">
+            <a href="/jobs/?company={{ co.company|urlencode }}" class="btn-view-jobs">
+              View Jobs
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </a>
+            <a href="{{ co.latest_link }}" target="_blank" rel="noopener noreferrer" class="btn-visit-site" aria-label="Visit company site">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3" />
+              </svg>
+            </a>
+          </div>
+        </article>
+        {% endfor %}
+      {% else %}
+        <div class="companies-empty">
+          <div class="companies-empty-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="2" y="7" width="20" height="14" rx="2" />
+              <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
+            </svg>
+          </div>
+          <h3>No companies yet</h3>
+          <p>Search for jobs first to populate company listings.</p>
         </div>
-    </footer>
-
-    <script src="{% static 'js/theme.js' %}"></script>
-    <script src="{% static 'js/job-details.js' %}"></script>
+      {% endif %}
+    </div>
+ 
+  </div>
+ 
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="logo">
+            <div class="logo-icon">
+              <svg width="20" height="20" viewBox="0 0 32 32" fill="none"><path d="M16 4L28 16L16 28L4 16Z" fill="white" /></svg>
+            </div>
+            <span>Job<em>Pilot</em></span>
+          </div>
+          <p>Connecting remote talent with extraordinary opportunities worldwide.</p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-col">
+            <h4>Platform</h4>
+            <ul>
+              <li><a href="/jobs/">Browse Jobs</a></li>
+              <li><a href="/companies/">Companies</a></li>
+              <li><a href="/about/">About Us</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Resources</h4>
+            <ul>
+              <li><a href="#blog">Blog</a></li>
+              <li><a href="#guide">Career Guide</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 JobPilot. All rights reserved.</p>
+        <div class="footer-socials">
+          <a href="#" aria-label="Twitter">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.74l7.73-8.835L1.254 2.25H8.08l4.261 5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+            </svg>
+          </a>
+          <a href="#" aria-label="LinkedIn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z" /><circle cx="4" cy="4" r="2" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+ 
+  <script src="{% static 'js/theme.js' %}"></script>
+  <script>
+    // Navbar scroll
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 40);
+    });
+ 
+    // Mobile nav
+    document.getElementById('navToggle')?.addEventListener('click', function () {
+      document.querySelector('.nav-links').classList.toggle('open');
+      this.classList.toggle('active');
+    });
+ 
+    // Intersection observer for card entrance
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in-view');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+ 
+    document.querySelectorAll('.company-page-card').forEach(c => observer.observe(c));
+ 
+    // ── Live search + sort + alpha filter ──────────────────
+    const searchInput  = document.getElementById('companySearch');
+    const sortSelect   = document.getElementById('companiesSort');
+    const alphaButtons = document.querySelectorAll('.alpha-btn');
+    const grid         = document.getElementById('companiesGrid');
+    const countEl      = document.getElementById('visibleCount');
+ 
+    let activeLetter = 'all';
+ 
+    function getCards() {
+      return Array.from(grid.querySelectorAll('.company-page-card'));
+    }
+ 
+    function applyFilters() {
+      const query  = searchInput.value.toLowerCase().trim();
+      const sort   = sortSelect.value;
+      const cards  = getCards();
+ 
+      // 1. Filter
+      let visible = [];
+      cards.forEach(card => {
+        const name   = card.dataset.name  || '';
+        const letter = card.dataset.letter || '';
+        const nameMatch   = name.includes(query);
+        const letterMatch = activeLetter === 'all' || letter === activeLetter;
+ 
+        if (nameMatch && letterMatch) {
+          card.style.display = '';
+          visible.push(card);
+        } else {
+          card.style.display = 'none';
+        }
+      });
+ 
+      // 2. Sort
+      visible.sort((a, b) => {
+        if (sort === 'az')   return a.dataset.name.localeCompare(b.dataset.name);
+        if (sort === 'za')   return b.dataset.name.localeCompare(a.dataset.name);
+        if (sort === 'jobs') return parseInt(b.dataset.jobs) - parseInt(a.dataset.jobs);
+        return 0;
+      });
+ 
+      // 3. Re-order DOM
+      visible.forEach((card, i) => {
+        card.style.setProperty('--card-delay', i);
+        grid.appendChild(card);
+      });
+ 
+      countEl.textContent = visible.length;
+    }
+ 
+    searchInput.addEventListener('input', applyFilters);
+    sortSelect.addEventListener('change', applyFilters);
+ 
+    alphaButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        alphaButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeLetter = btn.dataset.letter;
+        applyFilters();
+      });
+    });
+ 
+    // Magnetic on cards
+    document.querySelectorAll('.btn-view-jobs').forEach(btn => {
+      btn.addEventListener('mousemove', (e) => {
+        const rect = btn.getBoundingClientRect();
+        const x = (e.clientX - rect.left - rect.width  / 2) * 0.12;
+        const y = (e.clientY - rect.top  - rect.height / 2) * 0.12;
+        btn.style.transform = `translate(${x}px, ${y}px) translateY(-2px)`;
+      });
+      btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
+    });
+  </script>
 </body>
 </html>
+ 

@@ -169,22 +169,27 @@
 
       <!-- Jobs List -->
       <div class="jobs-list">
-        {% if jobs %}
+        {% if jobs|length > 0 %}
+        
         {% for job in jobs reversed %}
         <article class="job-card" style="--card-delay: {{ forloop.counter0 }}">
           <div class="card-glow"></div>
+        
           <div class="job-header">
             <div class="company-logo">{{ job.company|first }}</div>
+        
             <div class="job-title-group">
               <h3 class="job-title">{{ job.title }}</h3>
               <p class="company-name">{{ job.company }}</p>
             </div>
+        
             <button class="save-btn" aria-label="Save job">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
               </svg>
             </button>
           </div>
+        
           <div class="job-meta">
             <span class="meta-tag">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -193,8 +198,10 @@
               </svg>
               {{ job.location }}
             </span>
+        
             <span class="meta-tag meta-tag-remote">Remote</span>
           </div>
+        
           <div class="job-footer">
             <a href="{{ job.link }}" target="_blank" class="btn-apply">
               Apply Now
@@ -205,19 +212,59 @@
           </div>
         </article>
         {% endfor %}
-        {% else %}
-        <div class="empty-state">
-          <div class="empty-icon">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <circle cx="11" cy="11" r="8" />
-              <path d="m21 21-4.35-4.35" />
-            </svg>
+        
+        {% elif cached_jobs|length > 0 %}
+        
+        {% for job in cached_jobs %}
+        <article class="job-card" style="--card-delay: {{ forloop.counter0 }}">
+          <div class="card-glow"></div>
+        
+          <div class="job-header">
+            <div class="company-logo">{{ job.company|first }}</div>
+        
+            <div class="job-title-group">
+              <h3 class="job-title">{{ job.title }}</h3>
+              <p class="company-name">{{ job.company }}</p>
+            </div>
+        
+            <button class="save-btn" aria-label="Save job">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+              </svg>
+            </button>
           </div>
-          <h3>No jobs found</h3>
-          <p>Try adjusting your filters or search terms</p>
+        
+          <div class="job-meta">
+            <span class="meta-tag">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              {{ job.location }}
+            </span>
+        
+            <span class="meta-tag meta-tag-remote">Remote</span>
+          </div>
+        
+          <div class="job-footer">
+            <a href="{{ job.link }}" target="_blank" class="btn-apply">
+              Apply Now
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+        </article>
+        {% endfor %}
+        
+        {% else %}
+        
+        <div style="text-align:center; padding:40px; opacity:0.7;">
+          <h3>No jobs found yet</h3>
+          <p>Try searching for a job like <b>Python</b>, <b>Django</b>, <b>Frontend</b>, etc.</p>
         </div>
+        
         {% endif %}
-      </div>
 
       <!-- Loading Skeleton -->
       <div id="loadingSkeleton" style="display: none" class="jobs-list">

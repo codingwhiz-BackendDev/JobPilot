@@ -1,0 +1,503 @@
+/* ============================================================
+   JOBPILOT — COMPANIES.CSS
+   Companies listing page: grid, cards, filters, stats
+   ============================================================ */
+
+/* ── Companies Container ── */
+.companies-page-container {
+    padding-top: var(--space-2xl);
+    padding-bottom: var(--space-3xl);
+    position: relative;
+    z-index: 2;
+}
+
+/* ── Search & Filter Bar ── */
+.companies-toolbar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    margin-bottom: var(--space-2xl);
+    flex-wrap: wrap;
+}
+
+.companies-search-wrap {
+    position: relative;
+    flex: 1;
+    min-width: 240px;
+}
+
+.companies-search-wrap .search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    pointer-events: none;
+}
+
+.companies-search-input {
+    width: 100%;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 13px 18px 13px 46px;
+    font-size: 0.93rem;
+    color: var(--text-primary);
+    outline: none;
+    transition: all var(--t-base) var(--ease);
+    font-family: var(--font-body);
+}
+
+.companies-search-input::placeholder {
+    color: var(--text-muted);
+}
+
+.companies-search-input:focus {
+    border-color: var(--accent-border);
+    box-shadow: 0 0 0 4px rgba(212, 168, 32, 0.08);
+    background: var(--bg-card-hover);
+}
+
+.companies-sort {
+    appearance: none;
+    background: var(--bg-card) url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239A9BAE' stroke-width='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 13px 36px 13px 16px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    outline: none;
+    font-family: var(--font-body);
+    transition: all var(--t-fast) var(--ease);
+    flex-shrink: 0;
+}
+
+.companies-sort option {
+    background: var(--bg-card);
+    color: var(--text-primary);
+}
+
+.companies-sort:focus {
+    border-color: var(--accent-border);
+    color: var(--text-primary);
+}
+
+/* Results count */
+.companies-results-count {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    white-space: nowrap;
+    flex-shrink: 0;
+    align-self: center;
+}
+
+.companies-results-count span {
+    color: var(--gold-400);
+    font-weight: 700;
+}
+
+/* ── Companies Grid ── */
+.companies-page-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: var(--space-lg);
+}
+
+/* ── Company Card (page version — richer than homepage) ── */
+.company-page-card {
+    position: relative;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-xl);
+    overflow: hidden;
+    transition: all var(--t-base) var(--ease);
+    cursor: default;
+    opacity: 0;
+    transform: translateY(20px);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.company-page-card.in-view {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: calc(var(--card-delay, 0) * 60ms);
+}
+
+/* Radial glow top-right */
+.company-page-card .card-glow {
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity var(--t-slow) var(--ease);
+    pointer-events: none;
+}
+
+/* Shimmer sweep */
+.company-page-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.035) 50%, transparent 60%);
+    transition: left 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    pointer-events: none;
+}
+
+/* Gold top line on hover */
+.company-page-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: var(--space-xl);
+    right: var(--space-xl);
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-500), transparent);
+    opacity: 0;
+    transition: opacity var(--t-base) var(--ease);
+}
+
+.company-page-card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--accent-border);
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-gold), var(--shadow-md);
+}
+
+.company-page-card:hover .card-glow {
+    opacity: 1;
+}
+
+.company-page-card:hover::before {
+    opacity: 1;
+}
+
+.company-page-card:hover::after {
+    left: 150%;
+}
+
+/* ── Card Header: Logo + Name + Location ── */
+.cp-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-md);
+}
+
+.cp-logo {
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, var(--surface), var(--surface-2));
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--gold-300);
+    flex-shrink: 0;
+    transition: all var(--t-base) var(--ease);
+}
+
+.company-page-card:hover .cp-logo {
+    background: linear-gradient(135deg, rgba(212, 168, 32, 0.15), rgba(88, 101, 242, 0.1));
+    border-color: var(--accent-border);
+    box-shadow: 0 0 20px rgba(212, 168, 32, 0.15);
+}
+
+.cp-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.cp-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    margin-bottom: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cp-location {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.cp-location svg {
+    flex-shrink: 0;
+    color: var(--gold-600);
+}
+
+/* ── Open Roles Badge ── */
+.cp-jobs-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    background: rgba(88, 101, 242, 0.1);
+    border: 1px solid rgba(88, 101, 242, 0.25);
+    border-radius: var(--radius-full);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #A5B4FF;
+    width: fit-content;
+}
+
+.cp-jobs-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #818CF8;
+    animation: jobsDotPulse 2s ease-in-out infinite;
+}
+
+@keyframes jobsDotPulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.5;
+        transform: scale(0.75);
+    }
+}
+
+/* ── Tags (remote / type) ── */
+.cp-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+}
+
+.cp-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    font-size: 0.74rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+    transition: all var(--t-fast) var(--ease);
+}
+
+.cp-tag-remote {
+    background: rgba(34, 197, 94, 0.08);
+    border-color: rgba(34, 197, 94, 0.2);
+    color: #4ADE80;
+}
+
+/* ── Card Footer CTA ── */
+.cp-card-footer {
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: var(--space-sm);
+}
+
+.btn-view-jobs {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 9px 16px;
+    background: linear-gradient(135deg, rgba(212, 168, 32, 0.12), rgba(212, 168, 32, 0.06));
+    border: 1px solid var(--accent-border);
+    border-radius: var(--radius-full);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--gold-300);
+    letter-spacing: 0.02em;
+    transition: all var(--t-base) var(--ease);
+    white-space: nowrap;
+}
+
+.btn-view-jobs:hover {
+    background: linear-gradient(135deg, var(--gold-500), var(--gold-400));
+    color: #080A0F;
+    border-color: var(--gold-400);
+    box-shadow: 0 4px 18px rgba(212, 168, 32, 0.3);
+}
+
+.btn-view-jobs svg {
+    transition: transform 0.2s var(--ease);
+}
+
+.btn-view-jobs:hover svg {
+    transform: translateX(3px);
+}
+
+.btn-visit-site {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    color: var(--text-muted);
+    transition: all var(--t-fast) var(--ease);
+    flex-shrink: 0;
+}
+
+.btn-visit-site:hover {
+    background: rgba(212, 168, 32, 0.08);
+    border-color: var(--accent-border);
+    color: var(--gold-400);
+    transform: translateY(-1px);
+}
+
+/* ── Empty State ── */
+.companies-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: var(--space-3xl) var(--space-lg);
+}
+
+.companies-empty-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto var(--space-lg);
+    color: var(--text-muted);
+}
+
+.companies-empty h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: var(--space-sm);
+}
+
+.companies-empty p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+/* ── Letter Index (A-Z jump) ── */
+.alpha-index {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: var(--space-xl);
+}
+
+.alpha-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all var(--t-fast) var(--ease);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.alpha-btn:hover {
+    background: var(--surface-2);
+    color: var(--text-primary);
+    border-color: var(--border-hover);
+}
+
+.alpha-btn.active {
+    background: linear-gradient(135deg, var(--gold-500), var(--gold-400));
+    border-color: var(--gold-400);
+    color: #080A0F;
+    font-weight: 700;
+}
+
+.alpha-btn.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* ── Section divider heading (e.g. "A", "B") ── */
+.companies-letter-heading {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--border);
+    letter-spacing: -0.02em;
+    margin: var(--space-xl) 0 var(--space-md);
+    grid-column: 1 / -1;
+    padding-left: 4px;
+    border-left: 3px solid var(--gold-600);
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+    .companies-page-grid {
+        grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .companies-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .companies-search-wrap {
+        min-width: unset;
+    }
+
+    .companies-page-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+
+    .alpha-index {
+        gap: 4px;
+    }
+
+    .alpha-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 0.72rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .companies-page-grid {
+        grid-template-columns: 1fr;
+    }
+}
